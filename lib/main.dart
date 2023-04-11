@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Navigation.dart';
+import 'package:firedart/firedart.dart';
+
+const apiKey = "AIzaSyBwOXWPA8TBeBFHtkJdaRVq_izMWTBrh20";
+const projectId = "jbtailors-72459";
 
 void main() {
+  Firestore.initialize(projectId);
   runApp(const MyApp());
 }
 
@@ -18,3 +23,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// https://youtu.be/Tw7L2NkhwPc
+// https://youtu.be/NcuaVjcrhoA
