@@ -30,8 +30,10 @@ class _NavigationState extends State<Navigation> {
     return Scaffold(
       body: Row(
         children: <Widget>[
-          SizedBox(
+          Container(
             width: scrnwidth * 0.175,
+            color: const Color.fromARGB(101, 33, 149, 243),
+
             // child: NavigationRail(
             //   selectedIndex: _selectedIndex,
             //   onDestinationSelected: (int index) {
@@ -58,15 +60,24 @@ class _NavigationState extends State<Navigation> {
               children: [
                 //hedder
                 Container(
-                  height: scrnheight * 0.2,
+                  height: scrnheight * 0.3,
                   padding: EdgeInsets.only(top: scrnheight * 0.05),
                   color: Colors.blue,
-                  child: const Text(
-                    "Online Taailoring Management System",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "assets/icon/icon.png",
+                        height: scrnheight * 0.1,
+                      ),
+                      SizedBox(
+                        height: scrnheight * 0.025,
+                      ),
+                      const Text(
+                        "Online Tailoring Management System",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
@@ -84,15 +95,17 @@ class _NavigationState extends State<Navigation> {
                   child: Container(
                       padding: EdgeInsets.all(scrnwidth * 0.0075),
                       // margin: EdgeInsets.only(bottom: scrnwidth * 0.005),
-                      color: _selectedIndex == 0 ? Colors.grey : Colors.white,
+                      color: _selectedIndex == 0
+                          ? Colors.grey
+                          : const Color.fromARGB(0, 0, 0, 0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Row(
                           children: [
-                            Icon(Icons.dashboard_outlined),
+                            const Icon(Icons.dashboard_outlined),
                             Padding(
                               padding: EdgeInsets.only(left: scrnwidth * 0.005),
-                              child: Text('Dashboard'),
+                              child: const Text('Dashboard'),
                             ),
                           ],
                         ),
@@ -109,15 +122,17 @@ class _NavigationState extends State<Navigation> {
                   child: Container(
                       padding: EdgeInsets.all(scrnwidth * 0.0075),
                       // margin: EdgeInsets.only(bottom: scrnwidth * 0.005),
-                      color: _selectedIndex == 1 ? Colors.grey : Colors.white,
+                      color: _selectedIndex == 1
+                          ? Colors.grey
+                          : const Color.fromARGB(0, 0, 0, 0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Row(
                           children: [
-                            Icon(Icons.people_outline),
+                            const Icon(Icons.people_outline),
                             Padding(
                               padding: EdgeInsets.only(left: scrnwidth * 0.005),
-                              child: Text('Customers'),
+                              child: const Text('Customers'),
                             ),
                           ],
                         ),
@@ -134,15 +149,17 @@ class _NavigationState extends State<Navigation> {
                   child: Container(
                       padding: EdgeInsets.all(scrnwidth * 0.0075),
                       // margin: EdgeInsets.only(bottom: scrnwidth * 0.005),
-                      color: _selectedIndex == 2 ? Colors.grey : Colors.white,
+                      color: _selectedIndex == 2
+                          ? Colors.grey
+                          : const Color.fromARGB(0, 0, 0, 0),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Row(
                           children: [
-                            Icon(Icons.event_outlined),
+                            const Icon(Icons.event_outlined),
                             Padding(
                               padding: EdgeInsets.only(left: scrnwidth * 0.005),
-                              child: Text('Oders'),
+                              child: const Text('Oders'),
                             ),
                           ],
                         ),
@@ -153,7 +170,7 @@ class _NavigationState extends State<Navigation> {
           ),
           const VerticalDivider(
             thickness: 1,
-            width: 1,
+            width: 0,
           ),
           Expanded(
             child: selectedComponent(),

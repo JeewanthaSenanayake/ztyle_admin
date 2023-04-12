@@ -7,4 +7,10 @@ class DatabaseManager {
     final data = await adminInfo.get();
     return data;
   }
+
+  Future<dynamic> CustormizeOder() async {
+    CollectionReference adminInfo = Firestore.instance.collection("Oder");
+    final data = await adminInfo.get();
+    return data;
+  }
 }
