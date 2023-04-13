@@ -4,14 +4,26 @@ import 'package:ztyle_admin/Other_pages/Dashboard.dart';
 import 'package:ztyle_admin/Other_pages/Oders.dart';
 
 class Navigation extends StatefulWidget {
-  const Navigation({super.key});
+  int DashSelector;
+  Navigation({super.key, required this.DashSelector});
 
   @override
-  State<Navigation> createState() => _NavigationState();
+  State<Navigation> createState() => _NavigationState(DashSelector);
 }
 
 class _NavigationState extends State<Navigation> {
+  int DashSelector;
+  _NavigationState(this.DashSelector);
+
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectedIndex = DashSelector;
+  }
+
   dynamic selectedComponent() {
     if (_selectedIndex == 0) {
       return Dashboard();

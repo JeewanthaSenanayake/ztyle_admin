@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: const Navigation(),
+      home: Navigation(DashSelector: 0),
     );
   }
 }

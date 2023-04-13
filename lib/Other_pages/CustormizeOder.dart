@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ztyle_admin/Navigation.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
 
 class CustormizeOder extends StatefulWidget {
@@ -19,6 +20,25 @@ class _CustormizeOderState extends State<CustormizeOder> {
   double scrnheight = 0;
   List<GestureDetector> CustormizeOderList = [];
   bool loading = true;
+
+  late Widget Displsydetails;
+
+  DisplayDatafun() {
+    setState(() {
+      Displsydetails = Container(
+        child: TextButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Navigation(DashSelector: 2)));
+          },
+          child: Text('click'),
+        ),
+      );
+    });
+  }
+
+  bool AfterCkickOder = true;
+
   getCustomizeOder() async {
     dynamic Custormizedata = await DatabaseManager().CustormizeOder();
     setState(() {
@@ -30,7 +50,10 @@ class _CustormizeOderState extends State<CustormizeOder> {
             CustormizeOderList.add(
               GestureDetector(
                 onTap: () {
-                  
+                  DisplayDatafun();
+                  setState(() {
+                    AfterCkickOder = false;
+                  });
                 },
                 child: Container(
                   // width: scrnwidth * 0.8,
@@ -97,12 +120,14 @@ class _CustormizeOderState extends State<CustormizeOder> {
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ))
-            : Container(
-                padding: EdgeInsets.all(15.0),
-                child: Column(
-                  children: CustormizeOderList,
-                ),
-              ),
+            : AfterCkickOder
+                ? Container(
+                    padding: EdgeInsets.all(15.0),
+                    child: Column(
+                      children: CustormizeOderList,
+                    ),
+                  )
+                : Displsydetails,
       ),
     );
   }
