@@ -273,7 +273,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
   }
 
   getCustomizeOder() async {
-    dynamic Custormizedata = await DatabaseManager().CustormizeOder();
+    dynamic Custormizedata = await DatabaseManager().Oder();
     setState(() {
       for (var element in Custormizedata) {
         for (int index = 0; index < element['oderID']; index++) {

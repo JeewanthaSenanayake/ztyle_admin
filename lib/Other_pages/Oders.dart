@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Other_pages/CustormizeOder.dart';
+import 'package:ztyle_admin/Other_pages/ReadymadeOder.dart';
 
 class Oders extends StatefulWidget {
   const Oders({super.key});
@@ -13,7 +14,9 @@ class _OdersState extends State<Oders> {
   dynamic SelectedOderType() {
     if (selectCard == 0) {
       return CustormizeOder();
-    } else if (selectCard == 1) {}
+    } else if (selectCard == 1) {
+      return RedymadeOder();
+    }
   }
 
   @override

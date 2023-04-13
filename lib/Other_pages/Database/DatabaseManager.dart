@@ -8,7 +8,7 @@ class DatabaseManager {
     return data;
   }
 
-  Future<dynamic> CustormizeOder() async {
+  Future<dynamic> Oder() async {
     CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
     final data = await OderInfoInfo.get();
     return data;
@@ -43,5 +43,22 @@ Future<dynamic> CustormizeOderFinished(dynamic oderData,
     print(data);
     return await OderInfoInfo.document(oderData.id).set(data);
   }
+
+  Future<dynamic> SendReadymedeOder(dynamic oderData,
+       int oderID, ) async {
+    CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
+    //create new map
+    Map<String, dynamic> data = {};
+    for (int i = 1; i <= oderData["oderID"]; i++) {
+      data[i.toString()] = oderData[i.toString()];
+    }
+    data["oderID"] = oderData["oderID"];
+    data["$oderID"]["isPending"] = 3;
+    data["$oderID"]["status"] = "Oder Posted";
+    print(data);
+    return await OderInfoInfo.document(oderData.id).set(data);
+  }
+
+
   
 }
