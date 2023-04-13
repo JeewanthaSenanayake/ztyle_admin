@@ -16,22 +16,95 @@ class _CustormizeOderState extends State<CustormizeOder> {
     getCustomizeOder();
   }
 
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   double scrnwidth = 0;
   double scrnheight = 0;
   List<GestureDetector> CustormizeOderList = [];
   bool loading = true;
 
-  late Widget Displsydetails;
+  dynamic Displsydetails;
+  List<String> Meshurments = [];
+  String MeshData = '';
 
-  DisplayDatafun() {
+  DisplayDatafun(dynamic element, int index) {
     setState(() {
       Displsydetails = Container(
-        child: TextButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Navigation(DashSelector: 2)));
-          },
-          child: Text('click'),
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            FadeInImage(
+              height: scrnheight * 0.5,
+              placeholder: const AssetImage("assets/LodingImg/loading.jpg"),
+              image: NetworkImage(
+                element["$index"]["basicData"]["url"],
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    element["$index"]["basicData"]["ClothType"],
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 20),
+                  ),
+                  Text(
+                      "Quantity : ${element["$index"]["basicData"]["quantity"]}"),
+                  Text("Colour : ${element["$index"]["basicData"]["Colour"]}"),
+                  Text("Note : ${element["$index"]["basicData"]["Note"]}"),
+                ],
+              ),
+            ),
+            // Text("Meshurements ${Meshurments.toString()}"),
+            Form(
+              key: _formkey,
+              child: SizedBox(
+                width: scrnwidth * 0.5,
+                child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Meshurmrnt Name",
+                    ),
+                    validator: (text) {
+                      if (text.toString().isEmpty) {
+                        return 'Meshurmrnt Name Can not be empty';
+                      }
+                    },
+                    onSaved: (text) {
+                      MeshData = text.toString();
+                      Meshurments = MeshData.split(',');
+                      Meshurments = Meshurments.map((item) => item.trim())
+                          .where((item) => item.isNotEmpty)
+                          .toList();
+                      print(Meshurments);
+
+                      print(MeshData);
+                      print(Meshurments.length);
+                    }),
+              ),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                if (_formkey.currentState!.validate()) {
+                  _formkey.currentState!.save();
+                }
+              },
+              child: Text("Add"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Navigation(DashSelector: 2)));
+              },
+              child: const Text('Submit'),
+            ),
+          ],
         ),
       );
     });
@@ -50,7 +123,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
             CustormizeOderList.add(
               GestureDetector(
                 onTap: () {
-                  DisplayDatafun();
+                  DisplayDatafun(element, (index + 1));
                   setState(() {
                     AfterCkickOder = false;
                   });
@@ -111,6 +184,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
       scrnwidth = MediaQuery.of(context).size.width;
       scrnheight = MediaQuery.of(context).size.height;
     });
+
     return Scaffold(
       body: SingleChildScrollView(
         child: loading
