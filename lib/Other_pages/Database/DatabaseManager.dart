@@ -17,7 +17,7 @@ class DatabaseManager {
   Future<dynamic> CustormizeDataMeshSubmit(dynamic oderData,
       List<String> Meshurments, int oderID, String Price) async {
     CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
-
+    //create new map
     Map<String, dynamic> data = {};
     for (int i = 1; i <= oderData["oderID"]; i++) {
       data[i.toString()] = oderData[i.toString()];
@@ -28,4 +28,20 @@ class DatabaseManager {
     print(data);
     return await OderInfoInfo.document(oderData.id).set(data);
   }
+
+Future<dynamic> CustormizeOderFinished(dynamic oderData,
+       int oderID, ) async {
+    CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
+    //create new map
+    Map<String, dynamic> data = {};
+    for (int i = 1; i <= oderData["oderID"]; i++) {
+      data[i.toString()] = oderData[i.toString()];
+    }
+    data["oderID"] = oderData["oderID"];
+    data["$oderID"]["isPending"] = 3;
+    data["$oderID"]["status"] = "Oder Posted";
+    print(data);
+    return await OderInfoInfo.document(oderData.id).set(data);
+  }
+  
 }

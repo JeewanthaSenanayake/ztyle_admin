@@ -26,6 +26,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
   List<String> Meshurments = [];
   String MeshData = '';
   String Price = "";
+  bool AfterCkickOder = true;
+
+  List<TableRow> MeshurmentTable = [];
 
   DisplayDatafun(dynamic element, int index) {
     setState(() {
@@ -58,10 +61,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
                       "Quantity : ${element["$index"]["basicData"]["quantity"]}"),
                   Text("Colour : ${element["$index"]["basicData"]["Colour"]}"),
                   Text("Note : ${element["$index"]["basicData"]["Note"]}"),
+                  Text("Fabric Type : ${element["$index"]["basicData"]["FabricType"]}"),
+                  Text("Time Duration : ${element["$index"]["basicData"]["TimeDuration"]}"),
+                  Text("Contact Number : ${element["$index"]["basicData"]["ContactNumber"]}"),
                 ],
               ),
             ),
             // Text("Meshurements ${Meshurments.toString()}"),
+            SizedBox(
+              height: 10,
+            ),
             Form(
               key: _formkey,
               child: Column(
@@ -90,6 +99,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           print(MeshData);
                           print(Meshurments.length);
                         }),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   SizedBox(
                     width: scrnwidth * 0.25,
@@ -123,23 +135,20 @@ class _CustormizeOderState extends State<CustormizeOder> {
                 ],
               ),
             ),
-            Text("${element.id} \n ${index}"),
+            SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
               onPressed: () async {
                 if (_formkey.currentState!.validate()) {
                   _formkey.currentState!.save();
+                  await DatabaseManager().CustormizeDataMeshSubmit(
+                      element, Meshurments, index, Price);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Navigation(DashSelector: 2)));
                 }
-                print(await DatabaseManager().CustormizeDataMeshSubmit(
-                    element, Meshurments, index, Price));
               },
               child: Text("Submit"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Navigation(DashSelector: 2)));
-              },
-              child: const Text('Submit'),
             ),
           ],
         ),
@@ -147,7 +156,121 @@ class _CustormizeOderState extends State<CustormizeOder> {
     });
   }
 
-  bool AfterCkickOder = true;
+  CompleateOder(dynamic element, int index) {
+    MeshurmentTable.add(const TableRow(
+      children: [
+        TableCell(
+          child: Text(
+            "Measurement",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+        TableCell(
+          child: Text(
+            "Value",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
+    ));
+    for (int i = 0; i < (element["$index"]["dataMeasurements"]).length; i++) {
+      String key = (element["$index"]["dataMeasurements"])[i].keys.elementAt(0);
+      MeshurmentTable.add(TableRow(
+        children: [
+          TableCell(
+            child: Text(key),
+          ),
+          TableCell(
+            child: Text((element["$index"]["dataMeasurements"])[i][key]),
+          ),
+        ],
+      ));
+    }
+    setState(() {
+      Displsydetails = Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            FadeInImage(
+              height: scrnheight * 0.5,
+              placeholder: const AssetImage("assets/LodingImg/loading.jpg"),
+              image: NetworkImage(
+                element["$index"]["basicData"]["url"],
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    element["$index"]["basicData"]["ClothType"],
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 20),
+                  ),
+                  Text(
+                      "Quantity : ${element["$index"]["basicData"]["quantity"]}"),
+                  Text("Colour : ${element["$index"]["basicData"]["Colour"]}"),
+                  Text("Note : ${element["$index"]["basicData"]["Note"]}"),
+                  Text("Fabric Type : ${element["$index"]["basicData"]["FabricType"]}"),
+                  Text("Time Duration : ${element["$index"]["basicData"]["TimeDuration"]}"),
+                  Text("Contact Number : ${element["$index"]["basicData"]["ContactNumber"]}"),
+                  Text("Address : ${element["$index"]["basicData"]["address"]}"),
+                  Text("Price : ${element["$index"]["price"]}"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    // alignment: Alignment.topLeft,
+                    width: scrnwidth * 0.35,
+                    child: Table(
+                      children: MeshurmentTable,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.orange)),
+                  onPressed: () async {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Navigation(DashSelector: 2)));
+                  },
+                  child: Text("Cancle"),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue)),
+                  onPressed: () async {
+                    await DatabaseManager().CustormizeOderFinished(
+                        element, index);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Navigation(DashSelector: 2)));
+                  },
+                  child: Text("Post Oder"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
 
   getCustomizeOder() async {
     dynamic Custormizedata = await DatabaseManager().CustormizeOder();
@@ -201,6 +324,64 @@ class _CustormizeOderState extends State<CustormizeOder> {
                               "Colour : ${element["${index + 1}"]["basicData"]["Colour"]}"),
                           Text(
                               "Note : ${element["${index + 1}"]["basicData"]["Note"]}"),
+                          Text(
+                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]}"),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else if (element["${index + 1}"]["isPending"] == 2 &&
+              element["${index + 1}"]["oderType"] == "custom") {
+            CustormizeOderList.add(
+              GestureDetector(
+                onTap: () {
+                  CompleateOder(element, (index + 1));
+                  setState(() {
+                    AfterCkickOder = false;
+                  });
+                },
+                child: Container(
+                  // width: scrnwidth * 0.8,
+                  color: Color.fromARGB(96, 98, 243, 134),
+                  padding: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.only(bottom: 10.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        height: scrnheight * 0.25,
+                        width: scrnheight * 0.275,
+                        child: FadeInImage(
+                          height: scrnheight * 0.25,
+                          placeholder:
+                              const AssetImage("assets/LodingImg/loading.jpg"),
+                          image: NetworkImage(
+                            element["${index + 1}"]["basicData"]["url"],
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            element["${index + 1}"]["basicData"]["ClothType"],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 20),
+                          ),
+                          Text(
+                              "Quantity : ${element["${index + 1}"]["basicData"]["quantity"]}"),
+                          Text(
+                              "Colour : ${element["${index + 1}"]["basicData"]["Colour"]}"),
+                          Text(
+                              "Note : ${element["${index + 1}"]["basicData"]["Note"]}"),
+                          Text(
+                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]}"),
+                          Text("Price : ${element["${index + 1}"]["price"]}"),
                         ],
                       )
                     ],
