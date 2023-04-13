@@ -25,6 +25,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
   dynamic Displsydetails;
   List<String> Meshurments = [];
   String MeshData = '';
+  String Price = "";
 
   DisplayDatafun(dynamic element, int index) {
     setState(() {
@@ -63,39 +64,75 @@ class _CustormizeOderState extends State<CustormizeOder> {
             // Text("Meshurements ${Meshurments.toString()}"),
             Form(
               key: _formkey,
-              child: SizedBox(
-                width: scrnwidth * 0.5,
-                child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Meshurmrnt Name",
-                    ),
-                    validator: (text) {
-                      if (text.toString().isEmpty) {
-                        return 'Meshurmrnt Name Can not be empty';
-                      }
-                    },
-                    onSaved: (text) {
-                      MeshData = text.toString();
-                      Meshurments = MeshData.split(',');
-                      Meshurments = Meshurments.map((item) => item.trim())
-                          .where((item) => item.isNotEmpty)
-                          .toList();
-                      print(Meshurments);
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: scrnwidth * 0.5,
+                    child: TextFormField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText:
+                              "Meshurmrnt Name (Seperate Meshurments by comma)",
+                        ),
+                        validator: (text) {
+                          if (text.toString().isEmpty) {
+                            return 'Meshurmrnt Name Can not be empty';
+                          }
+                        },
+                        onSaved: (text) {
+                          MeshData = text.toString();
+                          Meshurments = MeshData.split(',');
+                          Meshurments = Meshurments.map((item) => item.trim())
+                              .where((item) => item.isNotEmpty)
+                              .toList();
+                          print(Meshurments);
 
-                      print(MeshData);
-                      print(Meshurments.length);
-                    }),
+                          print(MeshData);
+                          print(Meshurments.length);
+                        }),
+                  ),
+                  SizedBox(
+                    width: scrnwidth * 0.25,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Price",
+                        // hintText: ClothTypeDiscrip,
+                      ),
+                      validator: (text) {
+                        if (text.toString().isEmpty) {
+                          return 'Price can not be empty';
+                        }
+                        final doubleNumber = double.tryParse(text!);
+                        final intNumber = int.tryParse(text);
+                        if (doubleNumber == null && intNumber == null) {
+                          return 'Invalide Price';
+                        }
+                        if (double.parse(text) <= 0) {
+                          return 'Price can not be zero or negative';
+                        }
+
+                        return null;
+                      },
+                      onSaved: (text) {
+                        Price = text!;
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
-
+            Text("${element.id} \n ${index}"),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formkey.currentState!.validate()) {
                   _formkey.currentState!.save();
                 }
+                print(await DatabaseManager().CustormizeDataMeshSubmit(
+                    element, Meshurments, index, Price));
               },
-              child: Text("Add"),
+              child: Text("Submit"),
             ),
             TextButton(
               onPressed: () {
