@@ -115,15 +115,29 @@ class _RedymadeOderState extends State<RedymadeOder> {
                 padding: const EdgeInsets.all(15.0),
                 width: scrnwidth * 0.7,
                 alignment: Alignment.center,
-                child: Table(
-                  // border: TableBorder.all(),
-                  columnWidths: {
-                    0: FixedColumnWidth(scrnheight * 0.25),
-                    1: FlexColumnWidth(),
-                    2: FlexColumnWidth(),
-                    3: FixedColumnWidth(scrnheight * 0.2),
-                  },
-                  children: OderTable,
+                child: Column(
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Readymade ordes",
+                          style: TextStyle(
+                              fontSize: scrnwidth * 0.025,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey),
+                        )),
+                    Table(
+                      // border: TableBorder.all(),
+                      columnWidths: {
+                        0: FixedColumnWidth(scrnheight * 0.25),
+                        1: FlexColumnWidth(),
+                        2: FlexColumnWidth(),
+                        3: FixedColumnWidth(scrnheight * 0.2),
+                      },
+                      children: OderTable,
+                    ),
+                  ],
                 ),
               ),
       ),

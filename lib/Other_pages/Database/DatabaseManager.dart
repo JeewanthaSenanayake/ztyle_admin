@@ -29,8 +29,10 @@ class DatabaseManager {
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
-Future<dynamic> CustormizeOderFinished(dynamic oderData,
-       int oderID, ) async {
+  Future<dynamic> CustormizeOderFinished(
+    dynamic oderData,
+    int oderID,
+  ) async {
     CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
     //create new map
     Map<String, dynamic> data = {};
@@ -44,8 +46,10 @@ Future<dynamic> CustormizeOderFinished(dynamic oderData,
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
-  Future<dynamic> SendReadymedeOder(dynamic oderData,
-       int oderID, ) async {
+  Future<dynamic> SendReadymedeOder(
+    dynamic oderData,
+    int oderID,
+  ) async {
     CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
     //create new map
     Map<String, dynamic> data = {};
@@ -59,6 +63,22 @@ Future<dynamic> CustormizeOderFinished(dynamic oderData,
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
-
-  
+  Future<dynamic> CustormizeOderReject(
+    dynamic oderData,
+    int oderID,
+    String Remark
+  ) async {
+    CollectionReference OderInfoInfo = Firestore.instance.collection("Oder");
+    //create new map
+    Map<String, dynamic> data = {};
+    for (int i = 1; i <= oderData["oderID"]; i++) {
+      data[i.toString()] = oderData[i.toString()];
+    }
+    data["oderID"] = oderData["oderID"];
+    data["$oderID"]["isPending"] = 5; //5 for reject
+    data["$oderID"]["status"] = "Rejected";
+    data["$oderID"]["remark"] = Remark;
+    print(data);
+    return await OderInfoInfo.document(oderData.id).set(data);
+  }
 }

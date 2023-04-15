@@ -45,7 +45,7 @@ class _OdersState extends State<Oders> {
                     child: const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        'Customized order',
+                        'Customized orders',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -69,7 +69,7 @@ class _OdersState extends State<Oders> {
                     child: const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        'Readymade orde',
+                        'Readymade ordes',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,

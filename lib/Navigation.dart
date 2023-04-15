@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Other_pages/Custormers.dart';
+import 'package:ztyle_admin/Other_pages/CustormizeOder.dart';
 import 'package:ztyle_admin/Other_pages/Dashboard.dart';
-import 'package:ztyle_admin/Other_pages/Oders.dart';
+
+import 'Other_pages/ReadymadeOder.dart';
 
 class Navigation extends StatefulWidget {
   int DashSelector;
@@ -30,7 +32,9 @@ class _NavigationState extends State<Navigation> {
     } else if (_selectedIndex == 1) {
       return Custormers();
     } else if (_selectedIndex == 2) {
-      return Oders();
+      return RedymadeOder();
+    } else if (_selectedIndex == 3) {
+      return CustormizeOder();
     }
   }
 
@@ -45,29 +49,6 @@ class _NavigationState extends State<Navigation> {
           Container(
             width: scrnwidth * 0.175,
             color: const Color.fromARGB(101, 33, 149, 243),
-
-            // child: NavigationRail(
-            //   selectedIndex: _selectedIndex,
-            //   onDestinationSelected: (int index) {
-            //     setState(() {
-            //       _selectedIndex = index;
-            //     });
-            //   },
-            //   labelType: NavigationRailLabelType.all,
-            //   backgroundColor: Colors.grey,
-            //   destinations: const [
-            //     NavigationRailDestination(
-            //       icon: Icon(Icons.dashboard_outlined),
-            //       selectedIcon: Icon(Icons.dashboard),
-            //       label: Text('Dashboard'),
-            //     ),
-            //     NavigationRailDestination(
-            //       icon: Icon(Icons.event_outlined),
-            //       selectedIcon: Icon(Icons.event),
-            //       label: Text('Oders'),
-            //     ),
-            //   ],
-            // ),
             child: Column(
               children: [
                 //hedder
@@ -171,7 +152,34 @@ class _NavigationState extends State<Navigation> {
                             const Icon(Icons.event_outlined),
                             Padding(
                               padding: EdgeInsets.only(left: scrnwidth * 0.005),
-                              child: const Text('Oders'),
+                              child: const Text('Readymade orde'),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    // Handle the tap event
+                    setState(() {
+                      _selectedIndex = 3;
+                    });
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(scrnwidth * 0.0075),
+                      // margin: EdgeInsets.only(bottom: scrnwidth * 0.005),
+                      color: _selectedIndex == 3
+                          ? Colors.grey
+                          : const Color.fromARGB(0, 0, 0, 0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.event_outlined),
+                            Padding(
+                              padding: EdgeInsets.only(left: scrnwidth * 0.005),
+                              child: const Text('Customized orders'),
                             ),
                           ],
                         ),
