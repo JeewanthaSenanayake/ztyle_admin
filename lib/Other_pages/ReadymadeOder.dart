@@ -86,7 +86,7 @@ class _RedymadeOderState extends State<RedymadeOder> {
                       loading = true;
                       getRedymadeOder();
                     },
-                    child: Text("Send Oder")),
+                    child: Text("Delivered")),
               ))
             ]));
           }
@@ -103,6 +103,13 @@ class _RedymadeOderState extends State<RedymadeOder> {
       scrnheight = MediaQuery.of(context).size.height;
     });
     return Scaffold(
+       appBar: AppBar(
+        title: const Text(
+          "Readymade orders",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color.fromARGB(255, 115, 118, 121),
+      ),
       body: SingleChildScrollView(
         child: loading
             ? Container(
@@ -117,16 +124,16 @@ class _RedymadeOderState extends State<RedymadeOder> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    Container(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Readymade ordes",
-                          style: TextStyle(
-                              fontSize: scrnwidth * 0.025,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                        )),
+                    // Container(
+                    //     padding: const EdgeInsets.only(bottom: 15),
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Text(
+                    //       "Readymade orders",
+                    //       style: TextStyle(
+                    //           fontSize: scrnwidth * 0.025,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Colors.black),
+                    //     )),
                     Table(
                       // border: TableBorder.all(),
                       columnWidths: {

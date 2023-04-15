@@ -10,7 +10,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  
   Future<dynamic> adminTelNo() async {
     // final adminInfo =
     //     FirebaseFirestore.instance.collection("adminData").doc("telNo");
@@ -31,7 +30,13 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Dashboard")),
+      appBar: AppBar(
+        title: const Text(
+          "Dashboard",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color.fromARGB(255, 115, 118, 121),
+      ),
       body: Column(
         children: [
           Container(

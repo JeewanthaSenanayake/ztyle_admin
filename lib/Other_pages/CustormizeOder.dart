@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Navigation.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
@@ -23,7 +25,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
   double scrnheight = 0;
   List<GestureDetector> CustormizeOderList = [];
   List<GestureDetector> ReadyToDiliveryOderList = [];
-  List<GestureDetector> PendingOderList = [];
+  List<Container> PendingOderList = [];
   bool loading = true;
 
   dynamic Displsydetails;
@@ -71,9 +73,13 @@ class _CustormizeOderState extends State<CustormizeOder> {
                               _formkey2.currentState!.save();
                               await DatabaseManager()
                                   .CustormizeOderReject(element, index, remark);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      Navigation(DashSelector: 2)));
+                              Navigator.of(context).pop();
+                              setState(() {
+                                CustormizeOderList = [];
+                                AfterCkickOder = true;
+                                loading = true;
+                                getCustomizeOder();
+                              });
                             }
                           },
                         ),
@@ -94,6 +100,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
         padding: EdgeInsets.all(10.0),
         child: Column(
           children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      AfterCkickOder = true;
+                    });
+                  },
+                  icon: Icon(Icons.arrow_back)),
+            ),
             FadeInImage(
               height: scrnheight * 0.5,
               placeholder: const AssetImage("assets/LodingImg/loading.jpg"),
@@ -121,14 +137,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
                   Text(
                       "Fabric Type : ${element["$index"]["basicData"]["FabricType"]}"),
                   Text(
-                      "Time Duration : ${element["$index"]["basicData"]["TimeDuration"]}"),
+                      "Time Duration : ${element["$index"]["basicData"]["TimeDuration"]} week"),
+                  Text(
+                      "Order Date : ${(element["$index"]["date"]).year}-${(element["$index"]["date"]).month}-${(element["$index"]["date"]).day}"),
                   Text(
                       "Contact Number : ${element["$index"]["basicData"]["ContactNumber"]}"),
                 ],
               ),
             ),
             // Text("Meshurements ${Meshurments.toString()}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Form(
@@ -141,11 +159,11 @@ class _CustormizeOderState extends State<CustormizeOder> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText:
-                              "Meshurmrnt Name (Seperate Meshurments by comma)",
+                              "Measurement Names (Seperate Measurements by comma)",
                         ),
                         validator: (text) {
                           if (text.toString().isEmpty) {
-                            return 'Meshurmrnt Name Can not be empty';
+                            return 'Measurement Names Can not be empty';
                           }
                         },
                         onSaved: (text) {
@@ -160,7 +178,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           print(Meshurments.length);
                         }),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
@@ -195,7 +213,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -209,13 +227,17 @@ class _CustormizeOderState extends State<CustormizeOder> {
                       _formkey.currentState!.save();
                       await DatabaseManager().CustormizeDataMeshSubmit(
                           element, Meshurments, index, Price);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Navigation(DashSelector: 2)));
+                      setState(() {
+                        CustormizeOderList = [];
+                        AfterCkickOder = true;
+                        loading = true;
+                        getCustomizeOder();
+                      });
                     }
                   },
-                  child: Text("Accept"),
+                  child: const Text("Accept"),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15.0,
                 ),
                 ElevatedButton(
@@ -225,7 +247,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                   onPressed: () async {
                     RejectDialogBox(element, index);
                   },
-                  child: Text("Reject"),
+                  child: const Text("Reject"),
                 ),
               ],
             ),
@@ -236,6 +258,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
   }
 
   CompleateOder(dynamic element, int index) {
+    MeshurmentTable = [];
     MeshurmentTable.add(const TableRow(
       children: [
         TableCell(
@@ -298,7 +321,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                   Text(
                       "Fabric Type : ${element["$index"]["basicData"]["FabricType"]}"),
                   Text(
-                      "Time Duration : ${element["$index"]["basicData"]["TimeDuration"]}"),
+                      "Time Duration : ${element["$index"]["basicData"]["TimeDuration"]} week"),
+                  Text(
+                      "Order Date : ${(element["$index"]["date"]).year}-${(element["$index"]["date"]).month}-${(element["$index"]["date"]).day}"),
                   Text(
                       "Contact Number : ${element["$index"]["basicData"]["ContactNumber"]}"),
                   Text(
@@ -327,12 +352,13 @@ class _CustormizeOderState extends State<CustormizeOder> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.orange)),
                   onPressed: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Navigation(DashSelector: 2)));
+                    setState(() {
+                      AfterCkickOder = true;
+                    });
                   },
-                  child: Text("Cancle"),
+                  child: Text("Back"),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 ElevatedButton(
@@ -342,8 +368,12 @@ class _CustormizeOderState extends State<CustormizeOder> {
                   onPressed: () async {
                     await DatabaseManager()
                         .CustormizeOderFinished(element, index);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Navigation(DashSelector: 2)));
+                    setState(() {
+                      ReadyToDiliveryOderList = [];
+                      AfterCkickOder = true;
+                      loading = true;
+                      getCustomizeOder();
+                    });
                   },
                   child: Text("Post Oder"),
                 ),
@@ -373,7 +403,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
                 },
                 child: Container(
                   // width: scrnwidth * 0.8,
-                  color: Color.fromARGB(96, 98, 243, 134),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 233, 233, 233),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(120, 0, 0, 0),
+                        offset: Offset(0, 1),
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
                   padding: EdgeInsets.all(10.0),
                   margin: EdgeInsets.only(bottom: 10.0),
                   child: Row(
@@ -411,7 +450,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           Text(
                               "Note : ${element["${index + 1}"]["basicData"]["Note"]}"),
                           Text(
-                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]}"),
+                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]} week"),
+                          Text(
+                              "Order Date : ${(element["${index + 1}"]["date"]).year}-${(element["${index + 1}"]["date"]).month}-${(element["${index + 1}"]["date"]).day}"),
                         ],
                       )
                     ],
@@ -431,7 +472,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
                 },
                 child: Container(
                   // width: scrnwidth * 0.8,
-                  color: Color.fromARGB(96, 98, 243, 134),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 233, 233, 233),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(120, 0, 0, 0),
+                        offset: Offset(0, 1),
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
                   padding: EdgeInsets.all(10.0),
                   margin: EdgeInsets.only(bottom: 10.0),
                   child: Row(
@@ -448,6 +498,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                             element["${index + 1}"]["basicData"]["url"],
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        width: scrnwidth * 0.02,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -466,12 +519,77 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           Text(
                               "Note : ${element["${index + 1}"]["basicData"]["Note"]}"),
                           Text(
-                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]}"),
+                              "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]} week"),
+                          Text(
+                              "Order Date : ${(element["${index + 1}"]["date"]).year}-${(element["${index + 1}"]["date"]).month}-${(element["${index + 1}"]["date"]).day}"),
                           Text("Price : ${element["${index + 1}"]["price"]}"),
                         ],
                       )
                     ],
                   ),
+                ),
+              ),
+            );
+          } else if (element["${index + 1}"]["isPending"] == 1 &&
+              element["${index + 1}"]["oderType"] == "custom" &&
+              element["${index + 1}"]["price"] != "Pending") {
+            PendingOderList.add(
+              Container(
+                // width: scrnwidth * 0.8,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 233, 233, 233),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(120, 0, 0, 0),
+                      offset: Offset(0, 1),
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      height: scrnheight * 0.25,
+                      width: scrnheight * 0.275,
+                      child: FadeInImage(
+                        height: scrnheight * 0.25,
+                        placeholder:
+                            const AssetImage("assets/LodingImg/loading.jpg"),
+                        image: NetworkImage(
+                          element["${index + 1}"]["basicData"]["url"],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: scrnwidth * 0.02,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          element["${index + 1}"]["basicData"]["ClothType"],
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                              fontSize: 20),
+                        ),
+                        Text(
+                            "Quantity : ${element["${index + 1}"]["basicData"]["quantity"]}"),
+                        Text(
+                            "Colour : ${element["${index + 1}"]["basicData"]["Colour"]}"),
+                        Text(
+                            "Note : ${element["${index + 1}"]["basicData"]["Note"]}"),
+                        Text(
+                            "Time Duration : ${element["${index + 1}"]["basicData"]["TimeDuration"]} week"),
+                        Text(
+                            "Order Date : ${(element["${index + 1}"]["date"]).year}-${(element["${index + 1}"]["date"]).month}-${(element["${index + 1}"]["date"]).day}"),
+                        Text("Price : ${element["${index + 1}"]["price"]}"),
+                      ],
+                    )
+                  ],
                 ),
               ),
             );
@@ -490,6 +608,13 @@ class _CustormizeOderState extends State<CustormizeOder> {
     });
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Customized orders",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color.fromARGB(255, 115, 118, 121),
+      ),
       body: SingleChildScrollView(
         child: loading
             ? Container(
@@ -503,16 +628,16 @@ class _CustormizeOderState extends State<CustormizeOder> {
                     padding: EdgeInsets.all(15.0),
                     child: Column(
                       children: [
-                        Container(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Customized orders",
-                              style: TextStyle(
-                                  fontSize: scrnwidth * 0.025,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
-                            )),
+                        // Container(
+                        //     padding: const EdgeInsets.only(bottom: 15),
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Text(
+                        //       "Customized orders",
+                        //       style: TextStyle(
+                        //           fontSize: scrnwidth * 0.025,
+                        //           fontWeight: FontWeight.bold,
+                        //           color: Colors.grey),
+                        //     )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -520,6 +645,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                               onTap: () {
                                 setState(() {
                                   selectCard = 0;
+                                  loading = true;
+                                  CustormizeOderList = [];
+                                  getCustomizeOder();
                                 });
                               },
                               child: Card(
@@ -546,6 +674,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                               onTap: () {
                                 setState(() {
                                   selectCard = 1;
+                                  loading = true;
+                                  ReadyToDiliveryOderList = [];
+                                  getCustomizeOder();
                                 });
                               },
                               child: Card(
@@ -572,6 +703,9 @@ class _CustormizeOderState extends State<CustormizeOder> {
                               onTap: () {
                                 setState(() {
                                   selectCard = 2;
+                                  loading = true;
+                                  PendingOderList = [];
+                                  getCustomizeOder();
                                 });
                               },
                               child: Card(
