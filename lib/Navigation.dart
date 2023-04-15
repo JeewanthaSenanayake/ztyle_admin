@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Other_pages/Custormers.dart';
 import 'package:ztyle_admin/Other_pages/CustormizeOder.dart';
 import 'package:ztyle_admin/Other_pages/Dashboard.dart';
+import 'package:ztyle_admin/Other_pages/Products.dart';
 
 import 'Other_pages/ReadymadeOder.dart';
 
@@ -35,6 +36,8 @@ class _NavigationState extends State<Navigation> {
       return RedymadeOder();
     } else if (_selectedIndex == 3) {
       return CustormizeOder();
+    } else if (_selectedIndex == 6) {
+      return Products();
     }
   }
 

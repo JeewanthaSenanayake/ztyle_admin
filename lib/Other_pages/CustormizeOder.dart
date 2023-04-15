@@ -628,16 +628,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                     padding: EdgeInsets.all(15.0),
                     child: Column(
                       children: [
-                        // Container(
-                        //     padding: const EdgeInsets.only(bottom: 15),
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Text(
-                        //       "Customized orders",
-                        //       style: TextStyle(
-                        //           fontSize: scrnwidth * 0.025,
-                        //           fontWeight: FontWeight.bold,
-                        //           color: Colors.grey),
-                        //     )),
+                       
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "533886226292",
+    "project_id": "jbtailors-72459",
+    "storage_bucket": "jbtailors-72459.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533886226292:android:9f1eb00c448e61a4d36621",
+        "android_client_info": {
+          "package_name": "com.example.jb_tailor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533886226292-nvkrpfmkhpvkvgvdqhn7rs0er29fv5u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jb_tailor",
+            "certificate_hash": "8e04180059f02c132c71191287e99d967981d679"
+          }
+        },
+        {
+          "client_id": "533886226292-ujuhnupnjvkk05bibend7tj8rio23l11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoCJRV_COHvG5bJ9WArpc8U3AaRRB24Z0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533886226292-ujuhnupnjvkk05bibend7tj8rio23l11.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533886226292-h2o87iig1hpa4dchvlh94ie4ii7d6d2e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ztyle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533886226292:android:ce2b64aa51522491d36621",
+        "android_client_info": {
+          "package_name": "com.example.ztyle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533886226292-ujuhnupnjvkk05bibend7tj8rio23l11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoCJRV_COHvG5bJ9WArpc8U3AaRRB24Z0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533886226292-ujuhnupnjvkk05bibend7tj8rio23l11.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533886226292-h2o87iig1hpa4dchvlh94ie4ii7d6d2e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ztyle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,8 +5,11 @@ import 'package:firedart/firedart.dart';
 const apiKey = "AIzaSyBwOXWPA8TBeBFHtkJdaRVq_izMWTBrh20";
 const projectId = "jbtailors-72459";
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Firestore.initialize(projectId);
+
+
   runApp(const MyApp());
 }
 
