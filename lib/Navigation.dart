@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ztyle_admin/Other_pages/Custormers.dart';
 import 'package:ztyle_admin/Other_pages/CustormizeOder.dart';
 import 'package:ztyle_admin/Other_pages/Dashboard.dart';
+import 'package:ztyle_admin/Other_pages/Payment.dart';
 import 'package:ztyle_admin/Other_pages/Products.dart';
+import 'package:ztyle_admin/Other_pages/Sales.dart';
 
 import 'Other_pages/ReadymadeOder.dart';
 
@@ -38,6 +40,10 @@ class _NavigationState extends State<Navigation> {
       return CustormizeOder();
     } else if (_selectedIndex == 6) {
       return Products();
+    } else if (_selectedIndex == 5) {
+      return Payment();
+    } else if (_selectedIndex == 4) {
+      return Sales();
     }
   }
 
@@ -68,10 +74,12 @@ class _NavigationState extends State<Navigation> {
                       SizedBox(
                         height: scrnheight * 0.025,
                       ),
-                      const Text(
+                      Text(
                         "Online Tailoring Management System",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 25, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: (scrnheight * scrnwidth) * 0.000025,
+                            color: Colors.white),
                       ),
                     ],
                   ),

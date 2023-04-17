@@ -66,7 +66,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           }),
                       Container(
                         alignment: Alignment.center,
-                        child: TextButton(
+                        child: ElevatedButton(
                           child: const Text("Reject"),
                           onPressed: () async {
                             if (_formkey2.currentState!.validate()) {
