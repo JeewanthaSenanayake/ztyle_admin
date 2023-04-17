@@ -56,25 +56,29 @@ class _PaymentState extends State<Payment> {
         TableRow(children: [
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
             child: const Text('Order ID',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
             child: const Text('Order Date',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
             child: const Text('Name',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
             child: const Text('Ammount',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
@@ -97,28 +101,32 @@ class _PaymentState extends State<Payment> {
               TableRow(children: [
                 TableCell(
                     child: Padding(
-                  padding: EdgeInsets.only(left: scrnwidth * 0.005),
+                  padding: EdgeInsets.only(
+                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
                   child: Text(
                     '$index',
                   ),
                 )),
                 TableCell(
                     child: Padding(
-                  padding: EdgeInsets.only(left: scrnwidth * 0.005),
+                  padding: EdgeInsets.only(
+                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
                   child: Text(
                     '${element['$index']['date'].year}-${element['$index']['date'].month}-${element['$index']['date'].day}',
                   ),
                 )),
                 TableCell(
                     child: Padding(
-                  padding: EdgeInsets.only(left: scrnwidth * 0.005),
+                  padding: EdgeInsets.only(
+                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
                   child: Text(
                     name,
                   ),
                 )),
                 TableCell(
                     child: Padding(
-                  padding: EdgeInsets.only(left: scrnwidth * 0.005),
+                  padding: EdgeInsets.only(
+                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
                   child: Text(
                     '${element['$index']['price']}',
                   ),
@@ -195,7 +203,20 @@ class _PaymentState extends State<Payment> {
                       Container(
                         margin: EdgeInsets.all(scrnwidth * 0.01),
                         child: Table(
-                          border: TableBorder.all(),
+                          // border: TableBorder.all(),
+                          border: const TableBorder(
+                            verticalInside:
+                                BorderSide(width: 1, color: Colors.black),
+                            left: BorderSide(width: 1, color: Colors.black),
+                            right: BorderSide(width: 1, color: Colors.black),
+                          ),
+                          columnWidths: const {
+                            0: IntrinsicColumnWidth(),
+                            1: IntrinsicColumnWidth(),
+                            2: IntrinsicColumnWidth(),
+                            3: IntrinsicColumnWidth(),
+                            4: IntrinsicColumnWidth(),
+                          },
                           children: PaymentTableRow,
                         ),
                       )
