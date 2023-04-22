@@ -330,8 +330,8 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(
-                              height:
-                                  (scrnheight * scrnwidth) * 0.0003, // specify a fixed height for the charts.BarChart widget
+                              height: (scrnheight * scrnwidth) *
+                                  0.0002, // specify a fixed height for the charts.BarChart widget
                               width: (scrnheight * scrnwidth) * 0.00055,
                               child: charts.BarChart(
                                 _chartdata,
@@ -375,7 +375,7 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             Container(
-                              height: (scrnheight * scrnwidth) * 0.0003,
+                              height: (scrnheight * scrnwidth) * 0.0002,
                               alignment: Alignment.bottomRight,
                               child: pie_chart.PieChart(
                                 dataMap: dataMap,
@@ -391,7 +391,7 @@ class _DashboardState extends State<Dashboard> {
                                 // centerText: "HYBRID",
                                 legendOptions: const pie_chart.LegendOptions(
                                   showLegendsInRow: false,
-                                  
+
                                   legendPosition:
                                       pie_chart.LegendPosition.right,
                                   showLegends: true,
