@@ -9,7 +9,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firestore.initialize(projectId);
 
-
   runApp(const MyApp());
 }
 

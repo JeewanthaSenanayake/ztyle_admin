@@ -46,7 +46,7 @@ class DatabaseManager {
     data["oderID"] = oderData["oderID"];
     data["$oderID"]["Measurements"] = Meshurments;
     data["$oderID"]["price"] = Price;
-    print(data);
+    
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
@@ -63,7 +63,7 @@ class DatabaseManager {
     data["oderID"] = oderData["oderID"];
     data["$oderID"]["isPending"] = 3;
     data["$oderID"]["status"] = "Oder Posted";
-    print(data);
+  
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
@@ -80,7 +80,7 @@ class DatabaseManager {
     data["oderID"] = oderData["oderID"];
     data["$oderID"]["isPending"] = 3;
     data["$oderID"]["status"] = "Oder Posted";
-    print(data);
+
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
@@ -96,7 +96,7 @@ class DatabaseManager {
     data["$oderID"]["isPending"] = 5; //5 for reject
     data["$oderID"]["status"] = "Rejected";
     data["$oderID"]["remark"] = Remark;
-    print(data);
+  
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
