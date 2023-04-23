@@ -194,7 +194,7 @@ class _PaymentState extends State<Payment> {
                               ),
                               const Spacer(),
                               Text(
-                                "Total : Rs.$Total",
+                                "Total : Rs.${Total.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),

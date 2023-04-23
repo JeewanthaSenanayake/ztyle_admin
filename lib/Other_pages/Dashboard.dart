@@ -1,3 +1,4 @@
+import 'package:firedart/generated/google/protobuf/wrappers.pbjson.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
@@ -25,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   bool loading = true;
-  String UserCount = "", OderCount = "", SelseCount = "";
+  String UserCount = "", OderCount = "", SelseCount = "", Revenue = "";
   Map<String, double> dataMap = {};
   dynamic SalesList = [];
   dynamic OrderList = [];
@@ -38,12 +39,15 @@ class _DashboardState extends State<Dashboard> {
 
       int allOdersCount = 0;
       int totalSelesCount = 0;
+      double totalRevenue = 0;
 
       for (var element in Oders) {
         allOdersCount = element["oderID"] + allOdersCount;
         for (int index = 1; index <= element["oderID"]; index++) {
           if (element["$index"]['price'] != 'Pending') {
             totalSelesCount++;
+            totalRevenue =
+                totalRevenue + double.parse(element["$index"]['price']);
             SalesList.add(element["$index"]);
           }
           OrderList.add(element["$index"]);
@@ -51,6 +55,7 @@ class _DashboardState extends State<Dashboard> {
       }
       OderCount = allOdersCount.toString();
       SelseCount = totalSelesCount.toString();
+      Revenue = totalRevenue.toStringAsFixed(2);
 
       makeData();
       makeDataPieChart();
@@ -221,80 +226,114 @@ class _DashboardState extends State<Dashboard> {
                 margin: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "Welcom to Admin Dashboard",
-                        style: TextStyle(
-                            fontSize: (scrnheight * scrnwidth) * 0.000035),
-                      ),
-                    ),
-                    SizedBox(
-                      height: (scrnheight * scrnwidth) * 0.00002,
-                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Text(
+                    //     "Welcom to Admin Dashboard",
+                    //     style: TextStyle(
+                    //         fontSize: (scrnheight * scrnwidth) * 0.000035),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: (scrnheight * scrnwidth) * 0.00002,
+                    // ),
                     Row(children: [
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              '$OderCount\nTotal Orders',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                      Expanded(
+                        child: Container(
+                            // your first child widget
                             ),
+                      ),
+                      Card(
+                        color: Colors.orange,
+                        // selectCard == 0 ? Colors.orange : Colors.blue,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            '$OderCount\nTotal Orders',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (scrnheight * scrnwidth) * 0.00002),
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              '$SelseCount\nTotal Sales',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                      Expanded(
+                        child: Container(
+                            // your first child widget
                             ),
+                      ),
+                      Card(
+                        color: Colors.orange,
+                        // selectCard == 0 ? Colors.orange : Colors.blue,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            '$SelseCount\nTotal Sales',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (scrnheight * scrnwidth) * 0.00002),
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              '$UserCount\nTotal Customers',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                      Expanded(
+                        child: Container(
+                            // your first child widget
                             ),
+                      ),
+                      Card(
+                        color: Colors.orange,
+                        // selectCard == 0 ? Colors.orange : Colors.blue,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            '$UserCount\nTotal Customers',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (scrnheight * scrnwidth) * 0.00002),
                           ),
                         ),
+                      ),
+                      Expanded(
+                        child: Container(
+                            // your first child widget
+                            ),
+                      ),
+                      Card(
+                        color: Colors.orange,
+                        // selectCard == 0 ? Colors.orange : Colors.blue,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'Rs.$Revenue\nTotal Revenue',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (scrnheight * scrnwidth) * 0.00002),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                            // your first child widget
+                            ),
                       ),
                     ]),
                     SizedBox(
@@ -302,127 +341,171 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Row(
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  "Sales in ",
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                                DropdownButton<String>(
-                                  value: _selectedItem,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedItem = value!;
-                                      makeData();
-                                    });
-                                  },
-                                  items: _items.map((item) {
-                                    return DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: (scrnheight * scrnwidth) *
-                                  0.0002, // specify a fixed height for the charts.BarChart widget
-                              width: (scrnheight * scrnwidth) * 0.00055,
-                              child: charts.BarChart(
-                                _chartdata,
-                                vertical: true,
-                                behaviors: [
-                                  charts.SeriesLegend(
-                                    position: charts.BehaviorPosition.bottom,
-                                  ),
-                                ],
+                        Expanded(
+                          child: Container(
+                              // your first child widget
                               ),
-                            ),
-                          ],
                         ),
-                        const Spacer(),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  "Orders in ",
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                                DropdownButton<String>(
-                                  value: _selectedItemsForOders,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedItemsForOders = value!;
-
-                                      makeDataPieChart();
-                                    });
-                                  },
-                                  items: _items.map((item) {
-                                    return DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: (scrnheight * scrnwidth) * 0.0002,
-                              alignment: Alignment.bottomRight,
-                              child: pie_chart.PieChart(
-                                dataMap: dataMap,
-                                animationDuration: Duration(milliseconds: 800),
-                                chartLegendSpacing: 32,
-                                chartRadius:
-                                    MediaQuery.of(context).size.width / 3.2,
-                                // colorList: colorList,
-                                initialAngleInDegree: 0,
-                                chartType: pie_chart.ChartType.disc,
-                                ringStrokeWidth: 32,
-
-                                // centerText: "HYBRID",
-                                legendOptions: const pie_chart.LegendOptions(
-                                  showLegendsInRow: false,
-
-                                  legendPosition:
-                                      pie_chart.LegendPosition.right,
-                                  showLegends: true,
-                                  // legendShape: _BoxShape.circle,
-                                  legendTextStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                chartValuesOptions:
-                                    const pie_chart.ChartValuesOptions(
-                                  showChartValueBackground: true,
-                                  showChartValues: true,
-                                  showChartValuesInPercentage: true,
-                                  showChartValuesOutside: false,
-                                  decimalPlaces: 1,
-                                ),
-
-                                gradientList: const [
-                                  [
-                                    Colors.red,
-                                    Colors.red,
-                                  ],
-                                  [
-                                    Colors.blue,
-                                    Colors.blue,
-                                  ],
-                                ],
-                                // emptyColorGradient: ---Empty Color gradient---
+                        Container(
+                          padding: const EdgeInsets.all(15.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 248, 245, 245),
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 10.0,
+                                offset: Offset(0.0, 5.0),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          transform: Matrix4.rotationX(0.1),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Sales in ",
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                  DropdownButton<String>(
+                                    value: _selectedItem,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedItem = value!;
+                                        makeData();
+                                      });
+                                    },
+                                    items: _items.map((item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(item),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: (scrnheight * scrnwidth) *
+                                    0.0002, // specify a fixed height for the charts.BarChart widget
+                                width: (scrnheight * scrnwidth) * 0.00055,
+                                child: charts.BarChart(
+                                  _chartdata,
+                                  vertical: true,
+                                  behaviors: [
+                                    charts.SeriesLegend(
+                                      position: charts.BehaviorPosition.bottom,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
+                              ),
+                        ),
+                        Container(
+                           padding: const EdgeInsets.all(15.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 248, 245, 245),
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 10.0,
+                                offset: Offset(0.0, 5.0),
+                              ),
+                            ],
+                          ),
+                          transform: Matrix4.rotationX(0.1),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Orders in ",
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                  DropdownButton<String>(
+                                    value: _selectedItemsForOders,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedItemsForOders = value!;
+
+                                        makeDataPieChart();
+                                      });
+                                    },
+                                    items: _items.map((item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(item),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: (scrnheight * scrnwidth) * 0.0002,
+                                alignment: Alignment.bottomRight,
+                                child: pie_chart.PieChart(
+                                  dataMap: dataMap,
+                                  animationDuration: Duration(milliseconds: 800),
+                                  chartLegendSpacing: 32,
+                                  chartRadius:
+                                      MediaQuery.of(context).size.width / 3.2,
+                                  // colorList: colorList,
+                                  initialAngleInDegree: 0,
+                                  chartType: pie_chart.ChartType.disc,
+                                  ringStrokeWidth: 32,
+
+                                  // centerText: "HYBRID",
+                                  legendOptions: const pie_chart.LegendOptions(
+                                    showLegendsInRow: false,
+
+                                    legendPosition:
+                                        pie_chart.LegendPosition.right,
+                                    showLegends: true,
+                                    // legendShape: _BoxShape.circle,
+                                    legendTextStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  chartValuesOptions:
+                                      const pie_chart.ChartValuesOptions(
+                                    showChartValueBackground: true,
+                                    showChartValues: true,
+                                    showChartValuesInPercentage: true,
+                                    showChartValuesOutside: false,
+                                    decimalPlaces: 1,
+                                  ),
+
+                                  gradientList: const [
+                                    [
+                                      Colors.red,
+                                      Colors.red,
+                                    ],
+                                    [
+                                      Colors.blue,
+                                      Colors.blue,
+                                    ],
+                                  ],
+                                  // emptyColorGradient: ---Empty Color gradient---
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
+                              ),
                         ),
                       ],
                     ),
