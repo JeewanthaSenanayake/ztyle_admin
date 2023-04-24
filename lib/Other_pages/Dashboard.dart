@@ -1,8 +1,10 @@
 import 'package:firedart/generated/google/protobuf/wrappers.pbjson.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:intl/intl.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
 import 'package:pie_chart/pie_chart.dart' as pie_chart;
+import 'package:syncfusion_flutter_charts/charts.dart' as Line_chart;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,10 +19,17 @@ class SalesDataCgart {
   SalesDataCgart(this.catagory, this.sales);
 }
 
+class SalesData {
+  SalesData(this.year, this.sales);
+  final String year;
+  final double sales;
+}
+
 class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     // TODO: implement initState
+    _tooltipBehavior = Line_chart.TooltipBehavior(enable: true);
     super.initState();
     totalCount();
   }
@@ -59,12 +68,57 @@ class _DashboardState extends State<Dashboard> {
 
       makeData();
       makeDataPieChart();
+      makeDataLineChart();
       loading = false;
     });
   }
 
-  // pie chart
+  //for line chart
+  late Line_chart.TooltipBehavior _tooltipBehavior;
+  List<SalesData> LineSalesData = [];
+  dynamic LineChartDataMap = {};
+  void makeDataLineChart() {
+    //-----------------------last week---------------------
+    int numDay = 0;
+    if (_selectedItemsForOdersLineChart == 'Last Week') {
+      numDay = 7;
+    } else if (_selectedItemsForOdersLineChart == 'Last 2 Weeks') {
+      numDay = 14;
+    } else if (_selectedItemsForOdersLineChart == 'Last 3 Weeks') {
+      numDay = 21;
+    } else if (_selectedItemsForOdersLineChart == 'Last 4 Weeks') {
+      numDay = 28;
+    }
+    DateTime currentDate = DateTime.now();
+    DateTime WeekAgo = currentDate.subtract(Duration(days: numDay));
+    //-----------------------------------------------------
+    setState(() {
+      LineChartDataMap = {};
+      LineSalesData = [];
+      for (var element in OrderList) {
+        if ((_selectedItemsForOdersLineChart == 'All Time'
+            ? true
+            : (element['date']).isAfter(WeekAgo))) {
+          if (LineChartDataMap[
+                  DateFormat('yyyy-MM-dd').format(element['date'])] ==
+              null) {
+            LineChartDataMap[DateFormat('yyyy-MM-dd').format(element['date'])] =
+                1;
+          } else {
+            LineChartDataMap[
+                DateFormat('yyyy-MM-dd').format(element['date'])]++;
+          }
+        }
+      }
 
+      LineChartDataMap.forEach((key, value) {
+        LineSalesData.add(SalesData(key, value.toDouble()));
+      });
+    });
+    print(LineChartDataMap);
+  }
+
+  // pie chart
   void makeDataPieChart() {
     double RedymadeCount = 0;
     double CuztormizeCount = 0;
@@ -188,6 +242,7 @@ class _DashboardState extends State<Dashboard> {
 
   String _selectedItem = 'All Time';
   String _selectedItemsForOders = 'All Time';
+  String _selectedItemsForOdersLineChart = 'All Time';
 
   List<String> _items = [
     'All Time',
@@ -222,294 +277,396 @@ class _DashboardState extends State<Dashboard> {
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ))
-            : Container(
-                margin: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    // Align(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     "Welcom to Admin Dashboard",
-                    //     style: TextStyle(
-                    //         fontSize: (scrnheight * scrnwidth) * 0.000035),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: (scrnheight * scrnwidth) * 0.00002,
-                    // ),
-                    Row(children: [
-                      Expanded(
-                        child: Container(
-                            // your first child widget
-                            ),
-                      ),
-                      Card(
-                        color: Colors.orange,
-                        // selectCard == 0 ? Colors.orange : Colors.blue,
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            '$OderCount\nTotal Orders',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: (scrnheight * scrnwidth) * 0.00002),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                            // your first child widget
-                            ),
-                      ),
-                      Card(
-                        color: Colors.orange,
-                        // selectCard == 0 ? Colors.orange : Colors.blue,
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            '$SelseCount\nTotal Sales',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: (scrnheight * scrnwidth) * 0.00002),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                            // your first child widget
-                            ),
-                      ),
-                      Card(
-                        color: Colors.orange,
-                        // selectCard == 0 ? Colors.orange : Colors.blue,
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            '$UserCount\nTotal Customers',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: (scrnheight * scrnwidth) * 0.00002),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                            // your first child widget
-                            ),
-                      ),
-                      Card(
-                        color: Colors.orange,
-                        // selectCard == 0 ? Colors.orange : Colors.blue,
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Rs.$Revenue\nTotal Revenue',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: (scrnheight * scrnwidth) * 0.00002),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                            // your first child widget
-                            ),
-                      ),
-                    ]),
-                    SizedBox(
-                      height: (scrnheight * scrnwidth) * 0.00002,
-                    ),
-                    Row(
-                      children: [
+            : SingleChildScrollView(
+                child: Container(
+                  margin: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      // Align(
+                      //   alignment: Alignment.bottomLeft,
+                      //   child: Text(
+                      //     "Welcom to Admin Dashboard",
+                      //     style: TextStyle(
+                      //         fontSize: (scrnheight * scrnwidth) * 0.000035),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: (scrnheight * scrnwidth) * 0.00002,
+                      // ),
+                      Row(children: [
                         Expanded(
                           child: Container(
                               // your first child widget
                               ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(15.0),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 248, 245, 245),
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 10.0,
-                                offset: Offset(0.0, 5.0),
-                              ),
-                            ],
+                        Card(
+                          color: Colors.orange,
+                          // selectCard == 0 ? Colors.orange : Colors.blue,
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          transform: Matrix4.rotationX(0.1),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Sales in ",
-                                    style: TextStyle(fontSize: 17),
-                                  ),
-                                  DropdownButton<String>(
-                                    value: _selectedItem,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedItem = value!;
-                                        makeData();
-                                      });
-                                    },
-                                    items: _items.map((item) {
-                                      return DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(item),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              '$OderCount\nTotal Orders',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
                               ),
-                              SizedBox(
-                                height: (scrnheight * scrnwidth) *
-                                    0.0002, // specify a fixed height for the charts.BarChart widget
-                                width: (scrnheight * scrnwidth) * 0.00055,
-                                child: charts.BarChart(
-                                  _chartdata,
-                                  vertical: true,
-                                  behaviors: [
-                                    charts.SeriesLegend(
-                                      position: charts.BehaviorPosition.bottom,
+                        ),
+                        Card(
+                          color: Colors.orange,
+                          // selectCard == 0 ? Colors.orange : Colors.blue,
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              '$SelseCount\nTotal Sales',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
+                              ),
+                        ),
+                        Card(
+                          color: Colors.orange,
+                          // selectCard == 0 ? Colors.orange : Colors.blue,
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              '$UserCount\nTotal Customers',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
+                              ),
+                        ),
+                        Card(
+                          color: Colors.orange,
+                          // selectCard == 0 ? Colors.orange : Colors.blue,
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              'Rs.$Revenue\nTotal Revenue',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                              // your first child widget
+                              ),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: (scrnheight * scrnwidth) * 0.00002,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 248, 245, 245),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ],
+                            ),
+                            transform: Matrix4.rotationX(0.1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Sales in ",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                    DropdownButton<String>(
+                                      value: _selectedItem,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedItem = value!;
+                                          makeData();
+                                        });
+                                      },
+                                      items: _items.map((item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              // your first child widget
-                              ),
-                        ),
-                        Container(
-                           padding: const EdgeInsets.all(15.0),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 248, 245, 245),
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 10.0,
-                                offset: Offset(0.0, 5.0),
-                              ),
-                            ],
-                          ),
-                          transform: Matrix4.rotationX(0.1),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Orders in ",
-                                    style: TextStyle(fontSize: 17),
-                                  ),
-                                  DropdownButton<String>(
-                                    value: _selectedItemsForOders,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedItemsForOders = value!;
-
-                                        makeDataPieChart();
-                                      });
-                                    },
-                                    items: _items.map((item) {
-                                      return DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(item),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: (scrnheight * scrnwidth) * 0.0002,
-                                alignment: Alignment.bottomRight,
-                                child: pie_chart.PieChart(
-                                  dataMap: dataMap,
-                                  animationDuration: Duration(milliseconds: 800),
-                                  chartLegendSpacing: 32,
-                                  chartRadius:
-                                      MediaQuery.of(context).size.width / 3.2,
-                                  // colorList: colorList,
-                                  initialAngleInDegree: 0,
-                                  chartType: pie_chart.ChartType.disc,
-                                  ringStrokeWidth: 32,
-
-                                  // centerText: "HYBRID",
-                                  legendOptions: const pie_chart.LegendOptions(
-                                    showLegendsInRow: false,
-
-                                    legendPosition:
-                                        pie_chart.LegendPosition.right,
-                                    showLegends: true,
-                                    // legendShape: _BoxShape.circle,
-                                    legendTextStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  chartValuesOptions:
-                                      const pie_chart.ChartValuesOptions(
-                                    showChartValueBackground: true,
-                                    showChartValues: true,
-                                    showChartValuesInPercentage: true,
-                                    showChartValuesOutside: false,
-                                    decimalPlaces: 1,
-                                  ),
-
-                                  gradientList: const [
-                                    [
-                                      Colors.red,
-                                      Colors.red,
+                                SizedBox(
+                                  height: (scrnheight * scrnwidth) *
+                                      0.0002, // specify a fixed height for the charts.BarChart widget
+                                  width: (scrnheight * scrnwidth) * 0.00055,
+                                  child: charts.BarChart(
+                                    _chartdata,
+                                    vertical: true,
+                                    behaviors: [
+                                      charts.SeriesLegend(
+                                        position:
+                                            charts.BehaviorPosition.bottom,
+                                      ),
                                     ],
-                                    [
-                                      Colors.blue,
-                                      Colors.blue,
-                                    ],
-                                  ],
-                                  // emptyColorGradient: ---Empty Color gradient---
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              // your first child widget
-                              ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 248, 245, 245),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ],
+                            ),
+                            transform: Matrix4.rotationX(0.1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Orders in ",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                    DropdownButton<String>(
+                                      value: _selectedItemsForOders,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedItemsForOders = value!;
+
+                                          makeDataPieChart();
+                                        });
+                                      },
+                                      items: _items.map((item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: (scrnheight * scrnwidth) * 0.0002,
+                                  alignment: Alignment.bottomRight,
+                                  child: pie_chart.PieChart(
+                                    dataMap: dataMap,
+                                    animationDuration:
+                                        Duration(milliseconds: 800),
+                                    chartLegendSpacing: 32,
+                                    chartRadius:
+                                        MediaQuery.of(context).size.width / 3.2,
+                                    // colorList: colorList,
+                                    initialAngleInDegree: 0,
+                                    chartType: pie_chart.ChartType.disc,
+                                    ringStrokeWidth: 32,
+
+                                    // centerText: "HYBRID",
+                                    legendOptions:
+                                        const pie_chart.LegendOptions(
+                                      showLegendsInRow: false,
+
+                                      legendPosition:
+                                          pie_chart.LegendPosition.right,
+                                      showLegends: true,
+                                      // legendShape: _BoxShape.circle,
+                                      legendTextStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    chartValuesOptions:
+                                        const pie_chart.ChartValuesOptions(
+                                      showChartValueBackground: true,
+                                      showChartValues: true,
+                                      showChartValuesInPercentage: true,
+                                      showChartValuesOutside: false,
+                                      decimalPlaces: 1,
+                                    ),
+
+                                    gradientList: const [
+                                      [
+                                        Colors.red,
+                                        Colors.red,
+                                      ],
+                                      [
+                                        Colors.blue,
+                                        Colors.blue,
+                                      ],
+                                    ],
+                                    // emptyColorGradient: ---Empty Color gradient---
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(15.0),
+                            margin: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 248, 245, 245),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ],
+                            ),
+                            transform: Matrix4.rotationX(0.1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Sales in ",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                    DropdownButton<String>(
+                                      value: _selectedItemsForOdersLineChart,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedItemsForOdersLineChart =
+                                              value!;
+                                          makeDataLineChart();
+                                        });
+                                      },
+                                      items: _items.map((item) {
+                                        return DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: (scrnheight * scrnwidth) * 0.0002,
+                                  alignment: Alignment.bottomRight,
+                                  child: Line_chart.SfCartesianChart(
+                                      primaryXAxis: Line_chart.CategoryAxis(),
+                                      // Chart title
+                                      // title: Line_chart.ChartTitle(
+                                      //     text: 'Half yearly sales analysis'),
+                                      // Enable legend
+                                      legend:
+                                          Line_chart.Legend(isVisible: false),
+                                      // Enable tooltip
+                                      tooltipBehavior: _tooltipBehavior,
+                                      series: <
+                                          Line_chart
+                                              .LineSeries<SalesData, String>>[
+                                        Line_chart.LineSeries<SalesData,
+                                                String>(
+                                            dataSource: LineSalesData,
+                                            xValueMapper:
+                                                (SalesData sales, _) =>
+                                                    sales.year,
+                                            yValueMapper:
+                                                (SalesData sales, _) =>
+                                                    sales.sales,
+                                            // Enable data label
+                                            color: Colors.black,
+                                            dataLabelSettings: const Line_chart
+                                                    .DataLabelSettings(
+                                                isVisible: true))
+                                      ]),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                          onPressed: (() async {
+                            await DatabaseManager().TopRatings();
+                          }),
+                          child: Text("Click"))
+                    ],
+                  ),
                 ),
               ));
   }

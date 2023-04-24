@@ -33,6 +33,32 @@ class DatabaseManager {
     return data;
   }
 
+  Future<dynamic> TopRatings() async {
+    CollectionReference OderInfoInfoMen = Firestore.instance.collection("men");
+    final dataMen = await OderInfoInfoMen.get();
+    CollectionReference OderInfoInfoWomen =
+        Firestore.instance.collection("women");
+    final dataWomen = await OderInfoInfoWomen.get();
+    CollectionReference OderInfoInfoKids =
+        Firestore.instance.collection("kids");
+    final dataKids = await OderInfoInfoKids.get();
+
+    List<dynamic> allData = [];
+
+    allData.addAll(dataMen);
+    allData.addAll(dataWomen);
+    allData.addAll(dataKids);
+
+    //sort
+    allData.sort((b, a) => a['like'].compareTo(b['like']));
+
+    for (var element in allData) {
+      print(element);
+    }
+
+    return 1;
+  }
+
 //write database
 
   Future<dynamic> CustormizeDataMeshSubmit(dynamic oderData,
@@ -46,7 +72,7 @@ class DatabaseManager {
     data["oderID"] = oderData["oderID"];
     data["$oderID"]["Measurements"] = Meshurments;
     data["$oderID"]["price"] = Price;
-    
+
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
@@ -63,7 +89,7 @@ class DatabaseManager {
     data["oderID"] = oderData["oderID"];
     data["$oderID"]["isPending"] = 3;
     data["$oderID"]["status"] = "Oder Posted";
-  
+
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
@@ -96,7 +122,7 @@ class DatabaseManager {
     data["$oderID"]["isPending"] = 5; //5 for reject
     data["$oderID"]["status"] = "Rejected";
     data["$oderID"]["remark"] = Remark;
-  
+
     return await OderInfoInfo.document(oderData.id).set(data);
   }
 
