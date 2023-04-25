@@ -52,11 +52,7 @@ class DatabaseManager {
     //sort
     allData.sort((b, a) => a['like'].compareTo(b['like']));
 
-    for (var element in allData) {
-      print(element);
-    }
-
-    return 1;
+    return allData;
   }
 
 //write database

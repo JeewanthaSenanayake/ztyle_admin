@@ -1,4 +1,3 @@
-import 'package:firedart/generated/google/protobuf/wrappers.pbjson.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
@@ -39,17 +38,20 @@ class _DashboardState extends State<Dashboard> {
   Map<String, double> dataMap = {};
   dynamic SalesList = [];
   dynamic OrderList = [];
+  List<TableRow> TrandingTableRow = [];
+  List<Container> TodayOrder = [];
 
   totalCount() async {
     dynamic Users = await DatabaseManager().getUsers();
     dynamic Oders = await DatabaseManager().Oder();
+    dynamic Ratings = await DatabaseManager().TopRatings();
     setState(() {
       UserCount = Users.length.toString();
 
       int allOdersCount = 0;
       int totalSelesCount = 0;
       double totalRevenue = 0;
-
+      int todayOrderDisplayCount = 0;
       for (var element in Oders) {
         allOdersCount = element["oderID"] + allOdersCount;
         for (int index = 1; index <= element["oderID"]; index++) {
@@ -60,6 +62,50 @@ class _DashboardState extends State<Dashboard> {
             SalesList.add(element["$index"]);
           }
           OrderList.add(element["$index"]);
+
+          if (todayOrderDisplayCount < 3 &&
+              DateFormat('yyyy-MM-dd').format(element["$index"]['date']) ==
+                  DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+            TodayOrder.add(Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              padding: const EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 248, 245, 245),
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 5.0),
+                  ),
+                ],
+              ),
+              transform: Matrix4.rotationX(0.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FadeInImage(
+                    height: scrnheight * 0.0525,
+                    placeholder:
+                        const AssetImage("assets/LodingImg/loading.jpg"),
+                    image: NetworkImage(
+                      element["$index"]["oderType"] == "normal"
+                          ? element["$index"]["link"]
+                          : element["$index"]["basicData"]["url"],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  element["$index"]["oderType"] == "normal"
+                      ? Text("${element["$index"]["oderName"]}")
+                      : Text("${element["$index"]["basicData"]["ClothType"]}"),
+                ],
+              ),
+            ));
+            todayOrderDisplayCount++;
+          }
         }
       }
       OderCount = allOdersCount.toString();
@@ -69,6 +115,38 @@ class _DashboardState extends State<Dashboard> {
       makeData();
       makeDataPieChart();
       makeDataLineChart();
+
+      TrandingTableRow.add(const TableRow(children: [
+        TableCell(
+          child: Text('Product Name',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        TableCell(
+          child:
+              Text('Rate (%)', style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ]));
+
+      int totalLike = 0;
+      for (var element in Ratings) {
+        totalLike = element['like'] + totalLike;
+      }
+      for (int i = 0; i < 5; i++) {
+        TrandingTableRow.add(TableRow(children: [
+          TableCell(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 10, right: 15),
+            child: Text(Ratings[i]['name']),
+          )),
+          TableCell(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+                "${((Ratings[i]['like'] / totalLike) * 100).toStringAsFixed(2)}"),
+          )),
+        ]));
+      }
+
       loading = false;
     });
   }
@@ -95,7 +173,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       LineChartDataMap = {};
       LineSalesData = [];
-      for (var element in OrderList) {
+      for (var element in SalesList) {
         if ((_selectedItemsForOdersLineChart == 'All Time'
             ? true
             : (element['date']).isAfter(WeekAgo))) {
@@ -115,7 +193,7 @@ class _DashboardState extends State<Dashboard> {
         LineSalesData.add(SalesData(key, value.toDouble()));
       });
     });
-    print(LineChartDataMap);
+   
   }
 
   // pie chart
@@ -268,7 +346,7 @@ class _DashboardState extends State<Dashboard> {
             "Dashboard",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Color.fromARGB(255, 115, 118, 121),
+          backgroundColor: const Color.fromARGB(255, 115, 118, 121),
         ),
         body: loading
             ? Container(
@@ -307,7 +385,7 @@ class _DashboardState extends State<Dashboard> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               '$OderCount\nTotal Orders',
                               textAlign: TextAlign.center,
@@ -330,7 +408,7 @@ class _DashboardState extends State<Dashboard> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               '$SelseCount\nTotal Sales',
                               textAlign: TextAlign.center,
@@ -353,7 +431,7 @@ class _DashboardState extends State<Dashboard> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               '$UserCount\nTotal Customers',
                               textAlign: TextAlign.center,
@@ -376,7 +454,7 @@ class _DashboardState extends State<Dashboard> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               'Rs.$Revenue\nTotal Revenue',
                               textAlign: TextAlign.center,
@@ -397,11 +475,6 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                            child: Container(
-                                // your first child widget
-                                ),
-                          ),
                           Container(
                             padding: const EdgeInsets.all(15.0),
                             decoration: BoxDecoration(
@@ -446,7 +519,7 @@ class _DashboardState extends State<Dashboard> {
                                 SizedBox(
                                   height: (scrnheight * scrnwidth) *
                                       0.0002, // specify a fixed height for the charts.BarChart widget
-                                  width: (scrnheight * scrnwidth) * 0.00055,
+                                  width: (scrnheight * scrnwidth) * 0.0003,
                                   child: charts.BarChart(
                                     _chartdata,
                                     vertical: true,
@@ -459,6 +532,60 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                                // your first child widget
+                                ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 248, 245, 245),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ],
+                            ),
+                            transform: Matrix4.rotationX(0.1),
+                            child: SizedBox(
+                              height: (scrnheight * scrnwidth) *
+                                  0.00025, // specify a fixed height for the charts.BarChart widget
+                              width: (scrnheight * scrnwidth) * 0.00027,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Text(
+                                      "Top Rating Readymade Products",
+                                      style: TextStyle(
+                                          fontSize:
+                                              scrnheight * scrnwidth * 0.000017,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Table(
+                                    border: const TableBorder(
+                                        // verticalInside:
+                                        //     BorderSide(width: 1, color: Colors.black),
+                                        // horizontalInside: BorderSide(width: 1, color: Colors.black),
+
+                                        ),
+                                    columnWidths: const {
+                                      0: IntrinsicColumnWidth(),
+                                      1: IntrinsicColumnWidth(),
+                                    },
+                                    children: TrandingTableRow,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Expanded(
@@ -514,7 +641,7 @@ class _DashboardState extends State<Dashboard> {
                                   child: pie_chart.PieChart(
                                     dataMap: dataMap,
                                     animationDuration:
-                                        Duration(milliseconds: 800),
+                                        const Duration(milliseconds: 800),
                                     chartLegendSpacing: 32,
                                     chartRadius:
                                         MediaQuery.of(context).size.width / 3.2,
@@ -561,15 +688,36 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                                // your first child widget
-                                ),
-                          ),
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            height: (scrnheight * scrnwidth) * 0.0002825,
+                            width: (scrnheight * scrnwidth) * 0.00055,
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 27),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 248, 245, 245),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  blurRadius: 10.0,
+                                  offset: Offset(0.0, 5.0),
+                                ),
+                              ],
+                            ),
+                            transform: Matrix4.rotationX(0.1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: TodayOrder,
+                            ),
+                          ),
                           Expanded(
                             child: Container(
                                 // your first child widget
@@ -577,7 +725,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           Container(
                             padding: const EdgeInsets.all(15.0),
-                            margin: const EdgeInsets.all(15.0),
+                            margin: const EdgeInsets.only(top: 15),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 248, 245, 245),
                               borderRadius: BorderRadius.circular(10.0),
@@ -620,6 +768,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 Container(
                                   height: (scrnheight * scrnwidth) * 0.0002,
+                                  width: (scrnheight * scrnwidth) * 0.000525,
                                   alignment: Alignment.bottomRight,
                                   child: Line_chart.SfCartesianChart(
                                       primaryXAxis: Line_chart.CategoryAxis(),
@@ -653,18 +802,8 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                                // your first child widget
-                                ),
-                          ),
                         ],
                       ),
-                      ElevatedButton(
-                          onPressed: (() async {
-                            await DatabaseManager().TopRatings();
-                          }),
-                          child: Text("Click"))
                     ],
                   ),
                 ),
