@@ -274,7 +274,7 @@ class _ProductsState extends State<Products> {
                       element["name"],
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                          color: Colors.black,
                           fontSize: 20),
                     ),
                     Text("Fabric Material : ${element["fabric_material"]}"),

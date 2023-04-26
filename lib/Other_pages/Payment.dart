@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
 
 class Payment extends StatefulWidget {
@@ -57,29 +58,41 @@ class _PaymentState extends State<Payment> {
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Order ID',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Order Date',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Name',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
-            child: const Text('Ammount',
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
+            child: const Text('Amount',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
         ]),
@@ -102,7 +115,10 @@ class _PaymentState extends State<Payment> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     '$index',
                   ),
@@ -110,15 +126,22 @@ class _PaymentState extends State<Payment> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
-                    '${element['$index']['date'].year}-${element['$index']['date'].month}-${element['$index']['date'].day}',
+                    DateFormat('yyyy-MM-dd').format(element['$index']['date'])
+                    ,
                   ),
                 )),
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     name,
                   ),
@@ -126,7 +149,10 @@ class _PaymentState extends State<Payment> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     '${element['$index']['price']}',
                   ),
@@ -165,6 +191,8 @@ class _PaymentState extends State<Payment> {
                       child: CircularProgressIndicator(),
                     ))
                 : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                           alignment: Alignment.topRight,
@@ -200,23 +228,26 @@ class _PaymentState extends State<Payment> {
                               ),
                             ],
                           )),
+                          Container(
+                            margin: const EdgeInsets.only(left: 15),
+                            child: ElevatedButton(onPressed:() {
+                              
+                            }, child: const Text("Generate Report")),
+                          ),
                       Container(
                         margin: EdgeInsets.all(scrnwidth * 0.01),
                         child: Table(
                           // border: TableBorder.all(),
-                          border: const TableBorder(
-                            verticalInside:
-                                BorderSide(width: 1, color: Colors.black),
-                            left: BorderSide(width: 1, color: Colors.black),
-                            right: BorderSide(width: 1, color: Colors.black),
-                          ),
-                          columnWidths: const {
-                            0: IntrinsicColumnWidth(),
-                            1: IntrinsicColumnWidth(),
-                            2: IntrinsicColumnWidth(),
-                            3: IntrinsicColumnWidth(),
-                            4: IntrinsicColumnWidth(),
+                          columnWidths: {
+                            0: FixedColumnWidth(scrnheight * 0.35),
+                            1: FixedColumnWidth(scrnheight * 0.375),
+                            3: FixedColumnWidth(scrnheight * 0.375),
                           },
+                          border: const TableBorder(
+                            horizontalInside:
+                                BorderSide(width: 1, color: Colors.grey),
+                            bottom: BorderSide(width: 1, color: Colors.grey),
+                          ),
                           children: PaymentTableRow,
                         ),
                       )

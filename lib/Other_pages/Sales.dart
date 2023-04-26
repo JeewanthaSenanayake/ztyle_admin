@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
 
 class Sales extends StatefulWidget {
@@ -31,11 +32,13 @@ class _SalesState extends State<Sales> {
   int selectCard = 0;
   bool loading = true;
   String oderType = "";
+  double Total = 0;
 
   SalesTable() async {
     dynamic oders = await DatabaseManager().Oder();
     dynamic cuatormuz = await DatabaseManager().getUsers();
     String name = "";
+    Total = 0;
     //-----------------------last week---------------------
     int numDay = 0;
     if (_selectedItem == 'Last Week') {
@@ -64,36 +67,51 @@ class _SalesState extends State<Sales> {
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Order ID',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Order Date',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Customer Name',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Order Name',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
             padding: EdgeInsets.only(
-                left: scrnwidth * 0.005, right: scrnwidth * 0.005),
-            child: const Text('Ammount',
+                left: scrnwidth * 0.005,
+                right: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
+            child: const Text('Amount',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
         ]),
@@ -111,12 +129,16 @@ class _SalesState extends State<Sales> {
               (_selectedItem == 'All Time'
                   ? true
                   : (element['$index']['date']).isAfter(WeekAgo))) {
+            Total = Total + double.parse(element['$index']['price']);
             SalesTableRow.add(
               TableRow(children: [
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     '$index',
                   ),
@@ -124,15 +146,21 @@ class _SalesState extends State<Sales> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
-                    '${element['$index']['date'].year}-${element['$index']['date'].month}-${element['$index']['date'].day}',
+                    DateFormat('yyyy-MM-dd').format(element['$index']['date']),
                   ),
                 )),
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     name,
                   ),
@@ -140,7 +168,10 @@ class _SalesState extends State<Sales> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: selectCard == 0
                       ? Text(
                           element['$index']['basicData']['ClothType'],
@@ -150,7 +181,10 @@ class _SalesState extends State<Sales> {
                 TableCell(
                     child: Padding(
                   padding: EdgeInsets.only(
-                      left: scrnwidth * 0.005, right: scrnwidth * 0.005),
+                      left: scrnwidth * 0.005,
+                      right: scrnwidth * 0.005,
+                      top: scrnheight * 0.0175,
+                      bottom: scrnheight * 0.0175),
                   child: Text(
                     '${element['$index']['price']}',
                   ),
@@ -189,6 +223,8 @@ class _SalesState extends State<Sales> {
             : Container(
                 padding: EdgeInsets.all(15.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -280,8 +316,20 @@ class _SalesState extends State<Sales> {
                                 );
                               }).toList(),
                             ),
+                            const Spacer(),
+                            Text(
+                              "Total : Rs.${Total.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
                           ],
                         )),
+                    Container(
+                      margin: const EdgeInsets.only(left: 15),
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text("Generate Report")),
+                    ),
                     Container(
                       margin: EdgeInsets.all(scrnwidth * 0.01),
                       child: Table(
@@ -292,20 +340,18 @@ class _SalesState extends State<Sales> {
                         // 3: FlexColumnWidth(),
                         // 4: FixedColumnWidth(scrnheight * 0.15),
 
-                        columnWidths: const {
-                          0: IntrinsicColumnWidth(),
-                          1: IntrinsicColumnWidth(),
-                          2: IntrinsicColumnWidth(),
-                          3: IntrinsicColumnWidth(),
-                          4: IntrinsicColumnWidth(),
+                        columnWidths: {
+                          0: FixedColumnWidth(scrnheight * 0.175),
+                          1: FixedColumnWidth(scrnheight * 0.175),
+                          2: FixedColumnWidth(scrnheight * 0.375),
+                          4: FixedColumnWidth(scrnheight * 0.175),
                         },
                         // border: TableBorder.all(),
-                          border: const TableBorder(
-                            verticalInside:
-                                BorderSide(width: 1, color: Colors.black),
-                            left: BorderSide(width: 1, color: Colors.black),
-                            right: BorderSide(width: 1, color: Colors.black),
-                          ),
+                        border: const TableBorder(
+                          horizontalInside:
+                              BorderSide(width: 1, color: Colors.grey),
+                          bottom: BorderSide(width: 1, color: Colors.grey),
+                        ),
                         children: SalesTableRow,
                       ),
                     )

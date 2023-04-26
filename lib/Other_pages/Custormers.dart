@@ -26,19 +26,28 @@ class _CustormersState extends State<Custormers> {
         TableRow(children: [
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Name',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('E-mail',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
           TableCell(
               child: Padding(
-            padding: EdgeInsets.only(left: scrnwidth * 0.005),
+            padding: EdgeInsets.only(
+                left: scrnwidth * 0.005,
+                top: scrnheight * 0.0175,
+                bottom: scrnheight * 0.0175),
             child: const Text('Address',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           )),
@@ -49,17 +58,26 @@ class _CustormersState extends State<Custormers> {
           TableRow(children: [
             TableCell(
                 child: Padding(
-              padding: EdgeInsets.only(left: scrnwidth * 0.005),
+              padding: EdgeInsets.only(
+                  left: scrnwidth * 0.005,
+                  top: scrnheight * 0.0175,
+                  bottom: scrnheight * 0.0175),
               child: Text(element['name']),
             )),
             TableCell(
                 child: Padding(
-              padding: EdgeInsets.only(left: scrnwidth * 0.005),
+              padding: EdgeInsets.only(
+                  left: scrnwidth * 0.005,
+                  top: scrnheight * 0.0175,
+                  bottom: scrnheight * 0.0175),
               child: Text(element['email']),
             )),
             TableCell(
                 child: Padding(
-              padding: EdgeInsets.only(left: scrnwidth * 0.005),
+              padding: EdgeInsets.only(
+                  left: scrnwidth * 0.005,
+                  top: scrnheight * 0.0175,
+                  bottom: scrnheight * 0.0175),
               child: Text(element['address']),
             )),
           ]),
@@ -97,7 +115,12 @@ class _CustormersState extends State<Custormers> {
                     Container(
                       margin: EdgeInsets.all(scrnwidth * 0.01),
                       child: Table(
-                        border: TableBorder.all(),
+                        border: const TableBorder(
+                          horizontalInside:
+                              BorderSide(width: 1, color: Colors.grey),
+                          bottom: BorderSide(width: 1, color: Colors.grey),
+                        ),
+                        // border: TableBorder.all(),
                         children: CustomerTable,
                       ),
                     )

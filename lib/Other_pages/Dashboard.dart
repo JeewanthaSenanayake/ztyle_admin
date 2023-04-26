@@ -131,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
       for (var element in Ratings) {
         totalLike = element['like'] + totalLike;
       }
-      for (int i = 0; i < 1; i++) {
+      for (int i = 0; i < 3; i++) {
         TrandingTableRow.add(TableRow(children: [
           TableCell(
               child: Padding(
@@ -171,9 +171,10 @@ class _DashboardState extends State<Dashboard> {
     DateTime WeekAgo = currentDate.subtract(Duration(days: numDay));
     //-----------------------------------------------------
     setState(() {
+      
       LineChartDataMap = {};
       LineSalesData = [];
-      for (var element in SalesList) {
+      for (var element in OrderList) {
         if ((_selectedItemsForOdersLineChart == 'All Time'
             ? true
             : (element['date']).isAfter(WeekAgo))) {
@@ -188,12 +189,11 @@ class _DashboardState extends State<Dashboard> {
           }
         }
       }
-
+      
       LineChartDataMap.forEach((key, value) {
         LineSalesData.add(SalesData(key, value.toDouble()));
       });
     });
-   
   }
 
   // pie chart
@@ -377,21 +377,26 @@ class _DashboardState extends State<Dashboard> {
                               // your first child widget
                               ),
                         ),
-                        Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              '$OderCount\nTotal Orders',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                        SizedBox(
+                          width: scrnwidth * 0.16,
+                          child: Card(
+                            color: Color.fromARGB(255, 143, 187, 238),
+                            // selectCard == 0 ? Colors.orange : Colors.blue,
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                '$OderCount\nTotal Orders',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        (scrnheight * scrnwidth) * 0.00002),
+                              ),
                             ),
                           ),
                         ),
@@ -400,21 +405,26 @@ class _DashboardState extends State<Dashboard> {
                               // your first child widget
                               ),
                         ),
-                        Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              '$SelseCount\nTotal Sales',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                        SizedBox(
+                          width: scrnwidth * 0.16,
+                          child: Card(
+                            color: Color.fromARGB(255, 240, 143, 211),
+                            // selectCard == 0 ? Colors.orange : Colors.blue,
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                '$SelseCount\nTotal Sales',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        (scrnheight * scrnwidth) * 0.00002),
+                              ),
                             ),
                           ),
                         ),
@@ -423,21 +433,26 @@ class _DashboardState extends State<Dashboard> {
                               // your first child widget
                               ),
                         ),
-                        Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              '$UserCount\nTotal Customers',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                        SizedBox(
+                          width: scrnwidth * 0.16,
+                          child: Card(
+                            color: Color.fromARGB(255, 134, 214, 170),
+                            // selectCard == 0 ? Colors.orange : Colors.blue,
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                '$UserCount\nTotal Customers',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        (scrnheight * scrnwidth) * 0.00002),
+                              ),
                             ),
                           ),
                         ),
@@ -446,21 +461,26 @@ class _DashboardState extends State<Dashboard> {
                               // your first child widget
                               ),
                         ),
-                        Card(
-                          color: Colors.orange,
-                          // selectCard == 0 ? Colors.orange : Colors.blue,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Rs.$Revenue\nTotal Revenue',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (scrnheight * scrnwidth) * 0.00002),
+                        SizedBox(
+                          width: scrnwidth * 0.16,
+                          child: Card(
+                            color: Color.fromARGB(255, 238, 198, 138),
+                            // selectCard == 0 ? Colors.orange : Colors.blue,
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                'Rs.$Revenue\nTotal Revenue',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        (scrnheight * scrnwidth) * 0.00002),
+                              ),
                             ),
                           ),
                         ),
@@ -493,6 +513,13 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text(
+                                  "Total Sales",
+                                  style: TextStyle(
+                                      fontSize:
+                                          scrnheight * scrnwidth * 0.000017,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 Row(
                                   children: [
                                     const Text(
@@ -519,7 +546,7 @@ class _DashboardState extends State<Dashboard> {
                                 SizedBox(
                                   height: (scrnheight * scrnwidth) *
                                       0.0002, // specify a fixed height for the charts.BarChart widget
-                                  width: (scrnheight * scrnwidth) * 0.0003,
+                                  width: (scrnheight * scrnwidth) * 0.000375,
                                   child: charts.BarChart(
                                     _chartdata,
                                     vertical: true,
@@ -562,7 +589,7 @@ class _DashboardState extends State<Dashboard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(bottom: 10),
+                                    margin: EdgeInsets.only(bottom: 20),
                                     child: Text(
                                       "Top Rating Readymade Products",
                                       style: TextStyle(
@@ -578,9 +605,9 @@ class _DashboardState extends State<Dashboard> {
                                         // horizontalInside: BorderSide(width: 1, color: Colors.black),
 
                                         ),
-                                    columnWidths: const {
-                                      0: IntrinsicColumnWidth(),
-                                      1: IntrinsicColumnWidth(),
+                                    columnWidths: {
+                                      0: const IntrinsicColumnWidth(),
+                                      1: FixedColumnWidth(scrnwidth * 0.045),
                                     },
                                     children: TrandingTableRow,
                                   ),
@@ -611,6 +638,13 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text(
+                                  "Order Types",
+                                  style: TextStyle(
+                                      fontSize:
+                                          scrnheight * scrnwidth * 0.000017,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 Row(
                                   children: [
                                     const Text(
@@ -695,9 +729,9 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            height: (scrnheight * scrnwidth) * 0.0002825,
-                            width: (scrnheight * scrnwidth) * 0.00055,
+                            margin: const EdgeInsets.only(top: 30),
+                            height: (scrnheight * scrnwidth) * 0.00031,
+                            width: (scrnheight * scrnwidth) * 0.00057,
                             padding: const EdgeInsets.only(
                                 left: 15, right: 15, top: 27),
                             decoration: BoxDecoration(
@@ -715,7 +749,23 @@ class _DashboardState extends State<Dashboard> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: TodayOrder,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  child: Text(
+                                    "Today Orders",
+                                    style: TextStyle(
+                                        fontSize:
+                                            scrnheight * scrnwidth * 0.000017,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: TodayOrder,
+                                ),
+                              ],
                             ),
                           ),
                           Expanded(
@@ -725,7 +775,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           Container(
                             padding: const EdgeInsets.all(15.0),
-                            margin: const EdgeInsets.only(top: 15),
+                            margin: const EdgeInsets.only(top: 30),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 248, 245, 245),
                               borderRadius: BorderRadius.circular(10.0),
@@ -742,10 +792,17 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text(
+                                  "Growth of Orders",
+                                  style: TextStyle(
+                                      fontSize:
+                                          scrnheight * scrnwidth * 0.000017,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 Row(
                                   children: [
                                     const Text(
-                                      "Sales in ",
+                                      "Orders in ",
                                       style: TextStyle(fontSize: 17),
                                     ),
                                     DropdownButton<String>(

@@ -64,25 +64,48 @@ class _CustormizeOderState extends State<CustormizeOder> {
                           onSaved: (text) {
                             remark = text.toString();
                           }),
-                      Container(
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          child: const Text("Reject"),
-                          onPressed: () async {
-                            if (_formkey2.currentState!.validate()) {
-                              _formkey2.currentState!.save();
-                              await DatabaseManager()
-                                  .CustormizeOderReject(element, index, remark);
-                              Navigator.of(context).pop();
-                              setState(() {
-                                CustormizeOderList = [];
-                                AfterCkickOder = true;
-                                loading = true;
-                                getCustomizeOder();
-                              });
-                            }
-                          },
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 15),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                                child: const Text("Cancel"),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                },
+                              )),
+                              SizedBox(width: 15,),
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 15),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red)),
+                              child: const Text("Reject"),
+                              onPressed: () async {
+                                if (_formkey2.currentState!.validate()) {
+                                  _formkey2.currentState!.save();
+                                  await DatabaseManager().CustormizeOderReject(
+                                      element, index, remark);
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    CustormizeOderList = [];
+                                    AfterCkickOder = true;
+                                    loading = true;
+                                    getCustomizeOder();
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -127,7 +150,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                     element["$index"]["basicData"]["ClothType"],
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                        color: Colors.black,
                         fontSize: 20),
                   ),
                   Text(
@@ -217,37 +240,47 @@ class _CustormizeOderState extends State<CustormizeOder> {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue)),
-                  onPressed: () async {
-                    if (_formkey.currentState!.validate()) {
-                      _formkey.currentState!.save();
-                      await DatabaseManager().CustormizeDataMeshSubmit(
-                          element, Meshurments, index, Price);
-                      setState(() {
-                        CustormizeOderList = [];
-                        AfterCkickOder = true;
-                        loading = true;
-                        getCustomizeOder();
-                      });
-                    }
-                  },
-                  child: const Text("Accept"),
+                SizedBox(
+                  height: scrnheight * 0.05,
+                  width: scrnwidth * 0.1,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red)),
+                    onPressed: () async {
+                      RejectDialogBox(element, index);
+                    },
+                    child: const Text("Reject"),
+                  ),
                 ),
                 const SizedBox(
                   width: 15.0,
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red)),
-                  onPressed: () async {
-                    RejectDialogBox(element, index);
-                  },
-                  child: const Text("Reject"),
+                SizedBox(
+                  height: scrnheight * 0.05,
+                  width: scrnwidth * 0.1,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                    onPressed: () async {
+                      if (_formkey.currentState!.validate()) {
+                        _formkey.currentState!.save();
+                        await DatabaseManager().CustormizeDataMeshSubmit(
+                            element, Meshurments, index, Price);
+                        setState(() {
+                          CustormizeOderList = [];
+                          AfterCkickOder = true;
+                          loading = true;
+                          getCustomizeOder();
+                        });
+                      }
+                    },
+                    child: const Text("Accept"),
+                  ),
                 ),
               ],
             ),
@@ -269,7 +302,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
         ),
         TableCell(
           child: Text(
-            "Value",
+            "Value (cm)",
             style: TextStyle(color: Colors.red),
           ),
         ),
@@ -311,7 +344,7 @@ class _CustormizeOderState extends State<CustormizeOder> {
                     element["$index"]["basicData"]["ClothType"],
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                        color: Colors.black,
                         fontSize: 20),
                   ),
                   Text(
@@ -346,36 +379,46 @@ class _CustormizeOderState extends State<CustormizeOder> {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.orange)),
-                  onPressed: () async {
-                    setState(() {
-                      AfterCkickOder = true;
-                    });
-                  },
-                  child: Text("Back"),
+                SizedBox(
+                  height: scrnheight * 0.05,
+                  width: scrnwidth * 0.1,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.orange)),
+                    onPressed: () async {
+                      setState(() {
+                        AfterCkickOder = true;
+                      });
+                    },
+                    child: Text("Back"),
+                  ),
                 ),
                 const SizedBox(
                   width: 15,
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue)),
-                  onPressed: () async {
-                    await DatabaseManager()
-                        .CustormizeOderFinished(element, index);
-                    setState(() {
-                      ReadyToDiliveryOderList = [];
-                      AfterCkickOder = true;
-                      loading = true;
-                      getCustomizeOder();
-                    });
-                  },
-                  child: Text("Post Oder"),
+                SizedBox(
+                  height: scrnheight * 0.05,
+                  width: scrnwidth * 0.1,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                    onPressed: () async {
+                      await DatabaseManager()
+                          .CustormizeOderFinished(element, index);
+                      setState(() {
+                        ReadyToDiliveryOderList = [];
+                        AfterCkickOder = true;
+                        loading = true;
+                        getCustomizeOder();
+                      });
+                    },
+                    child: Text("Delivered"),
+                  ),
                 ),
               ],
             ),
@@ -628,7 +671,6 @@ class _CustormizeOderState extends State<CustormizeOder> {
                     padding: EdgeInsets.all(15.0),
                     child: Column(
                       children: [
-                       
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
