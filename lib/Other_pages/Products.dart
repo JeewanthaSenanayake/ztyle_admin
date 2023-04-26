@@ -566,7 +566,7 @@ class _ProductsState extends State<Products> {
                                           fontSize: scrnheight * 0.02,
                                           color: Colors.black,
                                         ),
-                                        hintText: "Beautiful cloths",
+                                        // hintText: "Beautiful cloths",
                                       ),
                                       validator: (text) {
                                         if (text.toString().isEmpty) {
@@ -607,7 +607,7 @@ class _ProductsState extends State<Products> {
                                           fontSize: scrnheight * 0.02,
                                           color: Colors.black,
                                         ),
-                                        hintText: "850.25",
+                                        // hintText: "850.25",
                                       ),
                                       validator: (text) {
                                         if (text.toString().isEmpty) {
@@ -671,7 +671,7 @@ class _ProductsState extends State<Products> {
                                                   "price": Price,
                                                   "type": _selectedItem.toLowerCase(),
                                                   "url":
-                                                      "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/men%2Fmen_8.jpg?alt=media&token=88002f72-ae10-492a-8888-234d97697d39",
+                                                      "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/men%2Fphoto_2023-04-26_22-30-00.jpg?alt=media&token=31b13aa1-1f46-493e-89bd-7ccb4867c5b9",
                                                 };
                                                 DatabaseManager().AddProducts(
                                                     ProdectDataMap,

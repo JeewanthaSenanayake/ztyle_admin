@@ -131,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
       for (var element in Ratings) {
         totalLike = element['like'] + totalLike;
       }
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 1; i++) {
         TrandingTableRow.add(TableRow(children: [
           TableCell(
               child: Padding(
