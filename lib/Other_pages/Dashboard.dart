@@ -171,7 +171,6 @@ class _DashboardState extends State<Dashboard> {
     DateTime WeekAgo = currentDate.subtract(Duration(days: numDay));
     //-----------------------------------------------------
     setState(() {
-      
       LineChartDataMap = {};
       LineSalesData = [];
       for (var element in OrderList) {
@@ -189,10 +188,13 @@ class _DashboardState extends State<Dashboard> {
           }
         }
       }
-      
+
       LineChartDataMap.forEach((key, value) {
         LineSalesData.add(SalesData(key, value.toDouble()));
       });
+
+      LineSalesData.sort((a, b) => DateTime.parse(a.year).compareTo(DateTime.parse(b.year)));
+      
     });
   }
 
