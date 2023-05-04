@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class Payment extends StatefulWidget {
   const Payment({super.key});
@@ -131,8 +136,7 @@ class _PaymentState extends State<Payment> {
                       top: scrnheight * 0.0175,
                       bottom: scrnheight * 0.0175),
                   child: Text(
-                    DateFormat('yyyy-MM-dd').format(element['$index']['date'])
-                    ,
+                    DateFormat('yyyy-MM-dd').format(element['$index']['date']),
                   ),
                 )),
                 TableCell(
@@ -166,6 +170,71 @@ class _PaymentState extends State<Payment> {
     });
   }
 
+  Future<void> DownloadPDF() async {
+    final pdf = pw.Document();
+
+    // pdf.addPage(pw.Page(
+    //     pageFormat: PdfPageFormat.a4,
+    //     build: (pw.Context context) {
+    //       return pw.Container(
+    //         margin: pw.EdgeInsets.all(scrnwidth * 0.01),
+    //         child: pw.Text("hi"),
+    //       ); // Center
+    //     })); // Page
+
+    final headers = ['Name', 'Age', 'Gender'];
+
+    // Define the table data
+    final data = [
+      ['Alice', '28', 'Female'],
+      ['Bob', '35', 'Male'],
+      ['Charlie', '42', 'Male'],
+      ['David', '19', 'Male'],
+      ['Eve', '24', 'Female'],
+    ];
+
+    // Create a table widget
+    final table = pw.Table.fromTextArray(
+      headers: headers,
+      data: data,
+      border: null,
+      headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+      cellStyle: const pw.TextStyle(),
+      headerDecoration: pw.BoxDecoration(
+        // borderRadius: 2,
+        color: PdfColors.grey400,
+      ),
+      // rowDecoration: pw.BoxDecoration(
+      //   border: pw.BoxBorder(
+      //     bottom: true,
+      //     color: PdfColors.grey300,
+      //   ),
+      // ),
+      headerHeight: 30,
+      cellHeight: 50,
+      cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.center,
+        2: pw.Alignment.center,
+      },
+    );
+
+    // Add the table to the PDF document
+    pdf.addPage(pw.Page(build: (pw.Context context) {
+      return pw.Center(
+        child: pw.Padding(
+          padding: const pw.EdgeInsets.all(20),
+          child: table,
+        ),
+      );
+    }));
+
+    final output = await getDownloadsDirectory();
+    final file = File("${output!.path}/genpdf.pdf");
+    await file.writeAsBytes(await pdf.save());
+    print("${output.path}/genpdf.pdf");
+  }
+
   @override
   Widget build(BuildContext context) {
     setState(() {
@@ -191,8 +260,8 @@ class _PaymentState extends State<Payment> {
                       child: CircularProgressIndicator(),
                     ))
                 : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                           alignment: Alignment.topRight,
@@ -228,12 +297,14 @@ class _PaymentState extends State<Payment> {
                               ),
                             ],
                           )),
-                          Container(
-                            margin: const EdgeInsets.only(left: 15),
-                            child: ElevatedButton(onPressed:() {
-                              
-                            }, child: const Text("Generate Report")),
-                          ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 15),
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              await DownloadPDF();
+                            },
+                            child: const Text("Generate Report")),
+                      ),
                       Container(
                         margin: EdgeInsets.all(scrnwidth * 0.01),
                         child: Table(
