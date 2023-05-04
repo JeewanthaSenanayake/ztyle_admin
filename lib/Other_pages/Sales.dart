@@ -310,6 +310,7 @@ class _SalesState extends State<Sales> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Color.fromARGB(255, 115, 118, 121),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: loading

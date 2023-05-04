@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ztyle_admin/Navigation.dart';
+import 'package:ztyle_admin/Login.dart';
 import 'package:firedart/firedart.dart';
 
 const apiKey = "AIzaSyBwOXWPA8TBeBFHtkJdaRVq_izMWTBrh20";
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: Navigation(DashSelector: 0),
+      home: Login(),
     );
   }
 }

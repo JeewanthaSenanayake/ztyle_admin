@@ -288,8 +288,10 @@ class _PaymentState extends State<Payment> {
         title: const Text(
           "Payment",
           style: TextStyle(fontWeight: FontWeight.bold),
+          
         ),
         backgroundColor: Color.fromARGB(255, 115, 118, 121),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Container(
