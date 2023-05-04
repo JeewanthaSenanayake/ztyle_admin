@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ztyle_admin/Other_pages/Database/DatabaseManager.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class Sales extends StatefulWidget {
   const Sales({super.key});
@@ -39,6 +44,7 @@ class _SalesState extends State<Sales> {
     dynamic cuatormuz = await DatabaseManager().getUsers();
     String name = "";
     Total = 0;
+    ReportBody = [];
     //-----------------------last week---------------------
     int numDay = 0;
     if (_selectedItem == 'Last Week') {
@@ -191,10 +197,103 @@ class _SalesState extends State<Sales> {
                 )),
               ]),
             );
+            List<dynamic> reportTableBody = [
+              "$index",
+              "${DateFormat('yyyy-MM-dd').format(element['$index']['date'])}",
+              "$name",
+              selectCard == 0
+                  ? "${element['$index']['basicData']['ClothType']}"
+                  : "${element['$index']['oderName']}",
+              "${element['$index']['price']}"
+            ];
+            ReportBody.add(reportTableBody);
           }
         }
       }
       loading = false;
+    });
+  }
+
+//Report download
+  List<List<dynamic>> ReportBody = [];
+  Future<void> DownloadPDF() async {
+    final pdf = pw.Document();
+
+    final headers = [
+      'Order ID',
+      'Order Date',
+      'Customer Name',
+      'Order Name',
+      'Amount (Rs)'
+    ];
+
+    // Create a table widget
+    final table = pw.Table.fromTextArray(
+      headers: headers,
+      data: ReportBody,
+      border: pw.TableBorder.all(
+        width: 1,
+        color: PdfColors.black,
+      ),
+      headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+      cellStyle: const pw.TextStyle(),
+      cellAlignments: {
+        0: pw.Alignment.centerLeft,
+        1: pw.Alignment.center,
+        2: pw.Alignment.center,
+      },
+    );
+
+    // Add the table to the PDF document
+    pdf.addPage(pw.Page(build: (pw.Context context) {
+      return pw.Container(
+        child: pw.Column(children: [
+          pw.Container(
+              child: pw.Text("JB Tailors & Tex",
+                  style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold, fontSize: 22))),
+          pw.Container(
+              margin: const pw.EdgeInsets.only(bottom: 15),
+              child: pw.Text("Tailoring Service Provider",
+                  style: const pw.TextStyle(fontSize: 15))),
+          pw.Container(
+              alignment: pw.Alignment.bottomLeft,
+              margin: const pw.EdgeInsets.only(bottom: 15),
+              child: selectCard == 0
+                  ? pw.Text("Customized order sales report",
+                      style: const pw.TextStyle(fontSize: 15))
+                  : pw.Text("Readymade order sales report",
+                      style: const pw.TextStyle(fontSize: 15))),
+          pw.Container(child: table)
+        ]),
+      );
+    }));
+
+    final output = await getDownloadsDirectory();
+    String downoadTime =
+        DateFormat('yyyy-MM-dd-hh.mm.ss').format(DateTime.now());
+    String reportType =
+        selectCard == 0 ? "Customized order" : "Readymade order";
+    final file = File("${output!.path}/$reportType-$downoadTime.pdf");
+    await file.writeAsBytes(await pdf.save());
+    print("${output.path}/genpdf.pdf");
+  }
+
+  void showPopupMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Return an Alert Dialog with your message
+        return AlertDialog(
+          // title: Text('Message'),
+          content: Text(message),
+        );
+      },
+    );
+
+    // Automatically dismiss the dialog after a delay
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
     });
   }
 
@@ -327,7 +426,12 @@ class _SalesState extends State<Sales> {
                     Container(
                       margin: const EdgeInsets.only(left: 15),
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await DownloadPDF();
+                            // ignore: use_build_context_synchronously
+                            showPopupMessage(context,
+                                "Your report downloaded. See downloads.");
+                          },
                           child: const Text("Generate Report")),
                     ),
                     Container(

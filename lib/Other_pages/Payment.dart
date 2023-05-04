@@ -163,6 +163,13 @@ class _PaymentState extends State<Payment> {
                 )),
               ]),
             );
+            List<dynamic> reportTableBody = [
+              "$index",
+              "${DateFormat('yyyy-MM-dd').format(element['$index']['date'])}",
+              "$name",
+              "${element['$index']['price']}"
+            ];
+            ReportBody.add(reportTableBody);
           }
         }
       }
@@ -170,6 +177,8 @@ class _PaymentState extends State<Payment> {
     });
   }
 
+//Report download
+  List<List<dynamic>> ReportBody = [];
   Future<void> DownloadPDF() async {
     final pdf = pw.Document();
 
@@ -182,36 +191,30 @@ class _PaymentState extends State<Payment> {
     //       ); // Center
     //     })); // Page
 
-    final headers = ['Name', 'Age', 'Gender'];
+    final headers = ['Order ID', 'Order Date', 'Customer Name', 'Amount (Rs)'];
 
     // Define the table data
-    final data = [
-      ['Alice', '28', 'Female'],
-      ['Bob', '35', 'Male'],
-      ['Charlie', '42', 'Male'],
-      ['David', '19', 'Male'],
-      ['Eve', '24', 'Female'],
-    ];
+    // final data = [
+    //   ['Alice', '28', 'Female'],
+    //   ['Bob', '35', 'Male'],
+    //   ['Charlie', '42', 'Male'],
+    //   ['David', '19', 'Male'],
+    //   ['Eve', '24', 'Female'],
+    // ];
 
     // Create a table widget
     final table = pw.Table.fromTextArray(
       headers: headers,
-      data: data,
-      border: null,
+      data: ReportBody,
+      border: pw.TableBorder.all(
+        width: 1,
+        color: PdfColors.black,
+      ),
       headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
       cellStyle: const pw.TextStyle(),
-      headerDecoration: pw.BoxDecoration(
-        // borderRadius: 2,
-        color: PdfColors.grey400,
-      ),
-      // rowDecoration: pw.BoxDecoration(
-      //   border: pw.BoxBorder(
-      //     bottom: true,
-      //     color: PdfColors.grey300,
-      //   ),
-      // ),
-      headerHeight: 30,
-      cellHeight: 50,
+
+      // headerHeight: 30,
+      // cellHeight: 50,
       cellAlignments: {
         0: pw.Alignment.centerLeft,
         1: pw.Alignment.center,
@@ -221,18 +224,57 @@ class _PaymentState extends State<Payment> {
 
     // Add the table to the PDF document
     pdf.addPage(pw.Page(build: (pw.Context context) {
-      return pw.Center(
-        child: pw.Padding(
-          padding: const pw.EdgeInsets.all(20),
-          child: table,
-        ),
+      return pw.Container(
+        // decoration: pw.BoxDecoration(
+        //   border: pw.Border.all(
+        //     color: PdfColors.black,
+        //     width: 1.0,
+        //   ),
+        // ),
+        // padding: pw.EdgeInsets.all(20),
+        child: pw.Column(children: [
+          pw.Container(
+              child: pw.Text("JB Tailors & Tex",
+                  style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold, fontSize: 22))),
+          pw.Container(
+              margin: const pw.EdgeInsets.only(bottom: 15),
+              child: pw.Text("Tailoring Service Provider",
+                  style: const pw.TextStyle(fontSize: 15))),
+          pw.Container(
+              alignment: pw.Alignment.bottomLeft,
+              margin: const pw.EdgeInsets.only(bottom: 15),
+              child: pw.Text("Payment Report",
+                  style: const pw.TextStyle(fontSize: 15))),
+          pw.Container(child: table)
+        ]),
       );
     }));
 
     final output = await getDownloadsDirectory();
-    final file = File("${output!.path}/genpdf.pdf");
+    String downoadTime =
+        DateFormat('yyyy-MM-dd-hh.mm.ss').format(DateTime.now());
+    final file = File("${output!.path}/Payment-$downoadTime.pdf");
     await file.writeAsBytes(await pdf.save());
     print("${output.path}/genpdf.pdf");
+  }
+
+  void showPopupMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Return an Alert Dialog with your message
+        return AlertDialog(
+          // title: Text('Message'),
+          content: Text(message),
+        );
+      },
+    );
+
+    // Automatically dismiss the dialog after a delay
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -279,6 +321,7 @@ class _PaymentState extends State<Payment> {
                                     _selectedItem = value!;
                                     loading = true;
                                     PaymentTableRow = [];
+                                    ReportBody = [];
                                     PaymentTable();
                                   });
                                 },
@@ -302,6 +345,9 @@ class _PaymentState extends State<Payment> {
                         child: ElevatedButton(
                             onPressed: () async {
                               await DownloadPDF();
+                              // ignore: use_build_context_synchronously
+                              showPopupMessage(context,
+                                  "Your report downloaded. See downloads.");
                             },
                             child: const Text("Generate Report")),
                       ),
