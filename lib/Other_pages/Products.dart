@@ -670,9 +670,16 @@ class _ProductsState extends State<Products> {
                                                   "like": 0,
                                                   "name": Name,
                                                   "price": Price,
-                                                  "type": _selectedItem.toLowerCase(),
-                                                  "url":
-                                                      "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/men%2Fphoto_2023-04-26_22-30-00.jpg?alt=media&token=31b13aa1-1f46-493e-89bd-7ccb4867c5b9",
+                                                  "type": _selectedItem
+                                                      .toLowerCase(),
+                                                  "url": _selectedItem == "Men"
+                                                      ? "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/men%2FMen.jpg?alt=media&token=835de4dd-5379-4a75-a90e-fd2efc5e2c07"
+                                                      : _selectedItem == "Women"
+                                                          ? "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/women%2FWomen.jpg?alt=media&token=e4b0cb72-bc64-476c-b344-7bbbf6850189"
+                                                          : _selectedItem ==
+                                                                  "Kids"
+                                                              ? "https://firebasestorage.googleapis.com/v0/b/jbtailors-72459.appspot.com/o/kids%2FKids.jpg?alt=media&token=11ccd8a9-b974-4c93-9b0b-364705b3be40"
+                                                              : "",
                                                 };
                                                 DatabaseManager().AddProducts(
                                                     ProdectDataMap,
